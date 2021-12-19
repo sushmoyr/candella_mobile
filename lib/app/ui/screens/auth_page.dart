@@ -5,11 +5,12 @@ import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends GetView<AuthController> {
   AuthPage({Key? key}) : super(key: key);
 
   final _loginFormKey = GlobalKey<FormState>();
   final _signUpFormKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthController _authController = Get.find();
 
   Widget _getLoginForm(BuildContext context, FormType type) {
@@ -18,6 +19,7 @@ class AuthPage extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            enabled: !_authController.isLoading.value,
             controller: _authController.emailController,
             validator: _emailValidator,
             decoration: const InputDecoration(
@@ -31,6 +33,7 @@ class AuthPage extends StatelessWidget {
           Obx(() {
             return TextFormField(
               controller: _authController.passwordController,
+              enabled: !_authController.isLoading.value,
               obscureText: _authController.obSecure.value,
               validator: _passwordValidator,
               decoration: InputDecoration(
@@ -124,13 +127,16 @@ class AuthPage extends StatelessWidget {
                 (type == FormType.signUp) ? StringRes.signUp : StringRes.login,
                 style: Theme.of(context).textTheme.headline6,
               ),
-              AppIconButton(
-                mode: IconButtonMode.rounded,
-                onTap: _handleButtonAction,
-                iconData: Icons.arrow_forward,
-                elevation: 8,
-                iconColor: Theme.of(context).colorScheme.onPrimary,
-              )
+              Obx(() => Loader(
+                    isLoading: _authController.isLoading.value,
+                    child: AppIconButton(
+                      mode: IconButtonMode.rounded,
+                      onTap: _handleButtonAction,
+                      iconData: Icons.arrow_forward,
+                      elevation: 8,
+                      iconColor: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ))
             ],
           )
         ],
@@ -183,11 +189,15 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: GetBuilder(
         builder: (AuthController controller) {
-          FormType type = controller.formType.value;
-          return _getMainBody(context, controller.formType.value);
+          return (_authController.isLoading.value)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : _getMainBody(context, controller.formType.value);
         },
       ),
     );
@@ -219,7 +229,6 @@ class AuthPage extends StatelessWidget {
 
   void _handleButtonAction() {
     FormType type = _authController.formType.value;
-
     if (type == FormType.signIn) {
       _handleLogin();
     } else {
@@ -227,19 +236,40 @@ class AuthPage extends StatelessWidget {
     }
   }
 
-  void _handleLogin() {
+  void _handleLogin() async {
     var state = _loginFormKey.currentState;
-    if (state != null && state.validate()) {
-      _authController.loginUser();
+    if (state != null && !state.validate()) {
+      return;
     }
-    print('Login in');
+    var result = await _authController.loginUser();
+    ScaffoldMessenger.of(_scaffoldKey.currentContext!).showSnackBar(SnackBar(
+      content: Text(result.message),
+    ));
   }
 
-  void _handleSignUp() {
+  void _handleSignUp() async {
     var state = _signUpFormKey.currentState;
-    if (state != null && state.validate()) {
-      _authController.loginUser();
+    if (state != null && !state.validate()) {
+      return;
     }
-    print('Signing Up');
+
+    var result = await _authController.registerUser();
+
+    ScaffoldMessenger.of(_scaffoldKey.currentContext!).showSnackBar(SnackBar(
+      content: Text(result.message),
+    ));
+  }
+}
+
+class Loader extends StatelessWidget {
+  const Loader({Key? key, required this.isLoading, this.child})
+      : super(key: key);
+  final bool isLoading;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    print(isLoading);
+    return (isLoading) ? CircularProgressIndicator() : child ?? Container();
   }
 }

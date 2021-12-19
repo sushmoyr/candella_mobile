@@ -1,4 +1,4 @@
-abstract class Success {
+abstract class ApiResult {
   late final int code;
   late final String phrase;
   late final String message;

@@ -9,4 +9,6 @@ class StringRes {
 
   static String loginMessage = 'Welcome\nBack';
   static String signUpMessage = 'Sign Up and\nStart Exploring';
+
+  static const String token = 'auth_token';
 }
