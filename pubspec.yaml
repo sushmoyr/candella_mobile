@@ -37,6 +37,9 @@ dependencies:
   get: ^4.6.1
   google_fonts: ^2.1.0
   get_storage: ^2.0.3
+  fancy_bottom_navigation: ^0.3.3
+  ionicons: ^0.1.2
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

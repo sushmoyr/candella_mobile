@@ -1,5 +1,8 @@
 abstract class Routes {
-  static const login = '/login';
-  static const signUp = '/create';
   static const auth = '/auth';
+  static const main = '/';
+  static const profile = '/profile';
+
+  static const home = '/home';
+  static const createContent = '/create_content';
 }

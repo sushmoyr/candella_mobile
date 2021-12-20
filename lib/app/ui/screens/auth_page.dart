@@ -1,6 +1,8 @@
 import 'package:candella/app/data/controllers/auth_controller.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
+import 'package:candella/app/resources/routes/app_routes.dart';
+import 'package:candella/app/ui/widgets/loader.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -245,6 +247,9 @@ class AuthPage extends GetView<AuthController> {
     ScaffoldMessenger.of(_scaffoldKey.currentContext!).showSnackBar(SnackBar(
       content: Text(result.message),
     ));
+    if (result.status) {
+      Get.toNamed(Routes.main);
+    }
   }
 
   void _handleSignUp() async {
@@ -258,18 +263,5 @@ class AuthPage extends GetView<AuthController> {
     ScaffoldMessenger.of(_scaffoldKey.currentContext!).showSnackBar(SnackBar(
       content: Text(result.message),
     ));
-  }
-}
-
-class Loader extends StatelessWidget {
-  const Loader({Key? key, required this.isLoading, this.child})
-      : super(key: key);
-  final bool isLoading;
-  final Widget? child;
-
-  @override
-  Widget build(BuildContext context) {
-    print(isLoading);
-    return (isLoading) ? CircularProgressIndicator() : child ?? Container();
   }
 }
