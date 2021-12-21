@@ -3,4 +3,5 @@ class EndPoints {
   static String login = '/login';
   static String create = '/create';
   static String info = '/u/info';
+  static String genres = 'types/genres';
 }

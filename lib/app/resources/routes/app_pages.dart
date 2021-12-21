@@ -1,4 +1,5 @@
 import 'package:candella/app/data/bindings/auth_binding.dart';
+import 'package:candella/app/data/bindings/create_content_binding.dart';
 import 'package:candella/app/data/bindings/extras_binding.dart';
 import 'package:candella/app/data/bindings/home_screen_binding.dart';
 import 'package:candella/app/data/bindings/main_screen_binding.dart';
@@ -8,6 +9,7 @@ import 'package:candella/app/services/prefs.dart';
 import 'package:candella/app/ui/screens/auth_page.dart';
 import 'package:candella/app/ui/screens/create_content_screen.dart';
 import 'package:candella/app/ui/screens/extras_screen.dart';
+import 'package:candella/app/ui/screens/genre_selector.dart';
 import 'package:candella/app/ui/screens/main/home_screen.dart';
 import 'package:candella/app/ui/screens/main/main_screen.dart';
 import 'package:candella/app/ui/screens/profile_screen.dart';
@@ -38,6 +40,7 @@ class AppPages {
       page: () => CreateContentScreen(),
       transition: Transition.rightToLeft,
       curve: Curves.decelerate,
+      binding: CreateContentBinding(),
     ),
     GetPage(
       name: Routes.profile,
@@ -52,6 +55,12 @@ class AppPages {
       transition: Transition.rightToLeft,
       curve: Curves.decelerate,
       binding: ExtrasBinding(),
+    ),
+    GetPage(
+      name: Routes.selectGenre,
+      page: () => GenreSelector(),
+      transition: Transition.downToUp,
+      curve: Curves.decelerate,
     ),
   ];
 
