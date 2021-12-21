@@ -1,10 +1,12 @@
 import 'package:candella/app/data/models/User.dart';
+import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/services/UserService.dart';
 import 'package:candella/app/services/prefs.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenController extends GetxController {
   final UserService _userService;
+  ProfileType profileType = ProfileType.self;
 
   ProfileScreenController(this._userService);
   var loading = RxBool(false);
@@ -13,6 +15,7 @@ class ProfileScreenController extends GetxController {
   void loadUser(String? id) async {
     loading(true);
     if (id == null) {
+      profileType = ProfileType.self;
       //Id null so it is taking current user
       //First we will check if any user data has been saved before
       var userData = Prefs.getCurrentUser();
@@ -48,6 +51,7 @@ class ProfileScreenController extends GetxController {
         user(User.fromRawJson(userData));
       }
     } else {
+      profileType = ProfileType.other;
       _userService.getUserFromId(id);
     }
   }

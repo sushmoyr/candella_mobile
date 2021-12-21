@@ -6,13 +6,14 @@ class ValueCard extends StatelessWidget {
   final TextStyle? valueTextStyle;
   final TextStyle? nameTextStyle;
   final Axis? direction;
+  final Widget? valueWidget;
   final Alignment? alignment;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
 
   const ValueCard({
     Key? key,
-    required this.value,
+    this.value = 0,
     this.name = '',
     this.valueTextStyle,
     this.nameTextStyle,
@@ -20,6 +21,7 @@ class ValueCard extends StatelessWidget {
     this.alignment,
     this.padding,
     this.margin,
+    this.valueWidget,
   }) : super(key: key);
 
   @override
@@ -37,9 +39,17 @@ class ValueCard extends StatelessWidget {
         direction: direction ?? Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Text(
-            modifiedValue,
-            style: valueTextStyle ?? Theme.of(context).textTheme.headline6,
+          SizedBox(
+            height: 36,
+            child: (valueWidget != null)
+                ? Center(child: valueWidget!)
+                : Center(
+                    child: Text(
+                      modifiedValue,
+                      style: valueTextStyle ??
+                          Theme.of(context).textTheme.headline6,
+                    ),
+                  ),
           ),
           Text(
             name,

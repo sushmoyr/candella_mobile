@@ -1,10 +1,12 @@
 import 'package:candella/app/data/controllers/profile_screen_controller.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
+import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/ui/widgets/expandable_card.dart';
 import 'package:candella/app/ui/widgets/loader.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:candella/app/ui/widgets/value_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -22,8 +24,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
               Column(
                 children: [
                   Image.network(
-                    controller.user.value.coverImage ??
-                        StringRes.defaultCoverImage,
+                    controller.user.value.coverImage,
                     loadingBuilder: (context, widget, loading) {
                       if (loading == null) {
                         return widget;
@@ -40,8 +41,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
               ClipOval(
                 child: CircleAvatar(
                   child: Image.network(
-                    controller.user.value.profileImage ??
-                        StringRes.defaultProfileUrl,
+                    controller.user.value.profileImage,
                     loadingBuilder: (context, child, loading) {
                       if (loading == null) {
                         return child;
@@ -55,7 +55,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
             ],
           ),
           Text(
-            controller.user.value.name ?? '',
+            controller.user.value.name,
             style: textTheme.headline5,
           ),
           Text(
@@ -85,13 +85,18 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                 ),
               ),
               Expanded(
-                child: AppIconButton(
-                  iconSize: 36,
-                  iconData: Ionicons.ellipsis_horizontal_circle_outline,
-                  onTap: () {
-                    print('more tapped');
-                  },
-                ),
+                child: (controller.profileType == ProfileType.self)
+                    ? ValueCard(
+                        valueWidget: Icon(Ionicons.person_add_outline),
+                        name: "Follow",
+                      )
+                    : AppIconButton(
+                        iconSize: 36,
+                        iconData: Ionicons.ellipsis_horizontal_circle_outline,
+                        onTap: () {
+                          print('more tapped');
+                        },
+                      ),
               ),
             ],
           ),
@@ -154,6 +159,13 @@ class ProfileScreen extends GetView<ProfileScreenController> {
     controller.loadUser(Get.parameters['id']);
     return Scaffold(
       backgroundColor: Color(0xFFEFEFEF),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        foregroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.black.withAlpha(0),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
       body: Obx(
         () => Loader(
           isLoading: controller.loading.value,

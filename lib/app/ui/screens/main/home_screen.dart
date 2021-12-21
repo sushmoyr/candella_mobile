@@ -23,7 +23,7 @@ class HomeScreen extends GetView<HomeController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Hi, John',
+                    'Hi, ${controller.user.value.name.split(' ')[0]}',
                     style: Theme.of(context).textTheme.headline5,
                   ),
                   Wrap(
@@ -33,7 +33,11 @@ class HomeScreen extends GetView<HomeController> {
                         iconData: Ionicons.notifications_outline,
                       ),
                       AppIconButton(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(Routes.extras, arguments: {
+                            "user": controller.user.value.toRawJson()
+                          });
+                        },
                         iconData: Ionicons.menu_outline,
                       ),
                     ],
@@ -54,8 +58,8 @@ class HomeScreen extends GetView<HomeController> {
                         onTap: () {
                           Get.toNamed(Routes.profile);
                         },
-                        child: Image.network(
-                            'https://candella.herokuapp.com/images/male_avatar.png'),
+                        child:
+                            Image.network(controller.user.value.profileImage),
                       ),
                     ),
                   ),

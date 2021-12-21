@@ -1,4 +1,5 @@
 import 'package:candella/app/data/bindings/auth_binding.dart';
+import 'package:candella/app/data/bindings/extras_binding.dart';
 import 'package:candella/app/data/bindings/home_screen_binding.dart';
 import 'package:candella/app/data/bindings/main_screen_binding.dart';
 import 'package:candella/app/data/bindings/profile_screen_binding.dart';
@@ -6,6 +7,7 @@ import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/services/prefs.dart';
 import 'package:candella/app/ui/screens/auth_page.dart';
 import 'package:candella/app/ui/screens/create_content_screen.dart';
+import 'package:candella/app/ui/screens/extras_screen.dart';
 import 'package:candella/app/ui/screens/main/home_screen.dart';
 import 'package:candella/app/ui/screens/main/main_screen.dart';
 import 'package:candella/app/ui/screens/profile_screen.dart';
@@ -43,6 +45,13 @@ class AppPages {
       transition: Transition.rightToLeft,
       curve: Curves.decelerate,
       binding: ProfileScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.extras,
+      page: () => ExtrasScreen(),
+      transition: Transition.rightToLeft,
+      curve: Curves.decelerate,
+      binding: ExtrasBinding(),
     ),
   ];
 

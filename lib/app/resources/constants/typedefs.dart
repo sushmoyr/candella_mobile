@@ -18,3 +18,5 @@ class Gender {
     throw Exception('Invalid Gender');
   }
 }
+
+enum ProfileType { self, other }

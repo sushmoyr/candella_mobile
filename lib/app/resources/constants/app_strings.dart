@@ -20,4 +20,6 @@ class StringRes {
       'https://candella.herokuapp.com/images/default_cover.png';
 
   static String currentUserKey = 'current_user_key';
+
+  static String notAdded = 'Not Added';
 }

@@ -10,10 +10,10 @@ import 'dart:convert';
 class User {
   User({
     this.id,
-    this.name,
+    this.name = '',
     this.email,
-    this.profileImage,
-    this.coverImage,
+    this.profileImage = StringRes.defaultProfileUrl,
+    this.coverImage = StringRes.defaultCoverImage,
     this.gender = Gender.notSpecified,
     this.following,
     this.followers,
@@ -30,10 +30,10 @@ class User {
   });
 
   final String? id;
-  final String? name;
+  final String name;
   final String? email;
-  final String? profileImage;
-  final String? coverImage;
+  final String profileImage;
+  final String coverImage;
   final String gender;
   final List<Follower>? following;
   final List<Follower>? followers;
@@ -77,11 +77,11 @@ class User {
         updatedAt: json["updatedAt"] == null
             ? null
             : DateTime.parse(json["updatedAt"]),
-        address: json["address"],
-        bio: json["bio"],
-        penName: json["pen_name"],
-        phone: json["phone"],
-        birthdate: json["birthdate"],
+        address: json["address"] ?? StringRes.notAdded,
+        bio: json["bio"] ?? '',
+        penName: json["pen_name"] ?? '',
+        phone: json["phone"] ?? StringRes.notAdded,
+        birthdate: json["birthdate"] ?? '1/1/1901',
         totalFollowers: json["totalFollowers"] ?? 0,
         totalFollowing: json["totalFollowing"] ?? 0,
       );
