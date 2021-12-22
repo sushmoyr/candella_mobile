@@ -1,5 +1,7 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:candella/app/data/controllers/auth_controller.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
+import 'package:candella/app/resources/constants/color_palette.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/ui/widgets/loader.dart';
@@ -54,22 +56,6 @@ class AuthPage extends GetView<AuthController> {
           SizedBox(
             height: 16,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                (type == FormType.signUp) ? StringRes.signUp : StringRes.login,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              AppIconButton(
-                mode: IconButtonMode.rounded,
-                onTap: _handleButtonAction,
-                iconData: Icons.arrow_forward,
-                elevation: 8,
-                iconColor: Theme.of(context).colorScheme.onPrimary,
-              )
-            ],
-          )
         ],
       ),
     );
@@ -122,25 +108,6 @@ class AuthPage extends GetView<AuthController> {
           SizedBox(
             height: 16,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                (type == FormType.signUp) ? StringRes.signUp : StringRes.login,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              Obx(() => Loader(
-                    isLoading: _authController.isLoading.value,
-                    child: AppIconButton(
-                      mode: IconButtonMode.rounded,
-                      onTap: _handleButtonAction,
-                      iconData: Icons.arrow_forward,
-                      elevation: 8,
-                      iconColor: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ))
-            ],
-          )
         ],
       ),
     );
@@ -157,15 +124,46 @@ class AuthPage extends GetView<AuthController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              (type == FormType.signUp)
-                  ? StringRes.signUpMessage
-                  : StringRes.loginMessage,
-              style: headline,
+            (type == FormType.signUp)
+                ? _getSignUpHeader(headline)
+                : _getLoginHeader(headline),
+            Column(
+              children: [
+                AnimatedCrossFade(
+                  firstCurve: Curves.decelerate,
+                  secondCurve: Curves.decelerate,
+                  firstChild: _getLoginForm(context, type),
+                  secondChild: _getSignUpForm(context, type),
+                  crossFadeState: (type == FormType.signIn)
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: Duration(milliseconds: 300),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      (type == FormType.signUp)
+                          ? StringRes.signUp
+                          : StringRes.login,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    Obx(
+                      () => Loader(
+                        isLoading: _authController.isLoading.value,
+                        child: AppIconButton(
+                          mode: IconButtonMode.rounded,
+                          onTap: _handleButtonAction,
+                          iconData: Icons.arrow_forward,
+                          elevation: 8,
+                          iconColor: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ],
             ),
-            (type == FormType.signIn)
-                ? _getLoginForm(context, type)
-                : _getSignUpForm(context, type),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -248,7 +246,7 @@ class AuthPage extends GetView<AuthController> {
       content: Text(result.message),
     ));
     if (result.status) {
-      Get.toNamed(Routes.main);
+      Get.offNamed(Routes.main);
     }
   }
 
@@ -263,5 +261,85 @@ class AuthPage extends GetView<AuthController> {
     ScaffoldMessenger.of(_scaffoldKey.currentContext!).showSnackBar(SnackBar(
       content: Text(result.message),
     ));
+  }
+
+  //Animations
+  Widget _getSignUpHeader(TextStyle style) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Sign Up and',
+            style: style,
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Row(
+            children: [
+              Text(
+                'Start ',
+                style: style,
+              ),
+              AnimatedTextKit(
+                pause: Duration.zero,
+                repeatForever: true,
+                animatedTexts: getList(
+                  0,
+                  style.copyWith(
+                    color: ColorPalette.lightPink,
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      );
+  Widget _getLoginHeader(TextStyle style) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Welcome',
+            style: style,
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Text(
+            'Back',
+            style: style.copyWith(
+              color: ColorPalette.lightPink,
+            ),
+          )
+        ],
+      );
+
+  List<FlickerAnimatedText> getList(int index, TextStyle style) {
+    List<FlickerAnimatedText> signUpWords = [
+      FlickerAnimatedText('Creating',
+          entryEnd: 0.3,
+          speed: Duration(seconds: 2),
+          textStyle: style.copyWith(color: ColorPalette.lightPink)),
+      FlickerAnimatedText('Reading',
+          entryEnd: 0.3,
+          speed: Duration(seconds: 2),
+          textStyle: style.copyWith(color: ColorPalette.lightPink)),
+      FlickerAnimatedText('Exploring',
+          entryEnd: 0.3,
+          speed: Duration(seconds: 2),
+          textStyle: style.copyWith(color: ColorPalette.lightPink)),
+    ];
+
+    List<FlickerAnimatedText> loginWords = [
+      FlickerAnimatedText(
+        'Back',
+        entryEnd: 0.3,
+        speed: Duration(seconds: 3),
+        textStyle: style.copyWith(
+          color: ColorPalette.lightPink,
+        ),
+      ),
+    ];
+
+    return (index == 0) ? signUpWords : loginWords;
   }
 }

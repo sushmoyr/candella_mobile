@@ -4,4 +4,6 @@ class EndPoints {
   static String create = '/create';
   static String info = '/u/info';
   static String genres = 'types/genres';
+  static String content = '/c';
+  static String singleImage = '/files/single';
 }

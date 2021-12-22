@@ -22,9 +22,11 @@ class HomeScreen extends GetView<HomeController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Hi, ${controller.user.value.name.split(' ')[0]}',
-                    style: Theme.of(context).textTheme.headline5,
+                  Obx(
+                    () => Text(
+                      'Hi, ${controller.user.value.name.split(' ').last}',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
                   ),
                   Wrap(
                     children: [
@@ -58,8 +60,8 @@ class HomeScreen extends GetView<HomeController> {
                         onTap: () {
                           Get.toNamed(Routes.profile);
                         },
-                        child:
-                            Image.network(controller.user.value.profileImage),
+                        child: Obx(() =>
+                            Image.network(controller.user.value.profileImage)),
                       ),
                     ),
                   ),

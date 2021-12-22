@@ -22,4 +22,6 @@ class StringRes {
   static String currentUserKey = 'current_user_key';
 
   static String notAdded = 'Not Added';
+
+  static String defaultContentCover = 'assets/images/default_content_cover.png';
 }
