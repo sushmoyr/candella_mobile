@@ -1,3 +1,7 @@
+import 'package:candella/app/data/models/error.dart';
+import 'package:candella/app/data/models/reason.dart';
+import 'package:candella/app/data/models/success.dart';
+
 abstract class ApiResult {
   late final int code;
   late final String phrase;

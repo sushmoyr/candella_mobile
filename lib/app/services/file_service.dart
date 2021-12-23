@@ -11,25 +11,29 @@ class FileService extends GetConnect {
     super.onInit();
   }
 
-  Future<String> uploadImage(String fileUrl) async {
-    File file = File(fileUrl);
-    var name = fileUrl.split('/').last;
-    print(name);
-    MultipartFile f = MultipartFile(file, filename: name);
+  Future<String> uploadImage(
+      String fileUrl, Function(double)? uploadProgress) async {
+    try {
+      File file = File(fileUrl);
+      var name = fileUrl.split('/').last;
+      print(name);
+      MultipartFile f = MultipartFile(file, filename: name);
 
-    FormData formData = FormData({"file": f});
+      FormData formData = FormData({"file": f});
 
-    var res = await post(
-      EndPoints.singleImage,
-      formData,
-      contentType: "multipart/form-data",
-      uploadProgress: (percentage) {},
-    );
-    if (res.hasError) {
-      print(res.statusText.toString());
-    } else {
-      print(res.body);
+      var res = await post(
+        EndPoints.singleImage,
+        formData,
+        uploadProgress: uploadProgress,
+      );
+
+      if (res.hasError) {
+        return Future.error('Something Went Wrong');
+      } else {
+        return res.body['link'];
+      }
+    } catch (e) {
+      return Future.error(e);
     }
-    return Future.error('error');
   }
 }

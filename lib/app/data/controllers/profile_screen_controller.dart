@@ -56,6 +56,8 @@ class ProfileScreenController extends GetxController {
     }
   }
 
+  void updateUser() async {}
+
   void _saveCurrentUserToMemory(User user) {
     Prefs.saveUser(user.toRawJson());
   }

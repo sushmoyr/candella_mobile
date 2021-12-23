@@ -1,5 +1,6 @@
 import 'package:candella/app/data/models/genre.dart';
 import 'package:candella/app/data/models/request_models/content_request.dart';
+import 'package:candella/app/data/models/result.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/services/content_service.dart';
 import 'package:candella/app/services/file_service.dart';
@@ -15,6 +16,7 @@ class CreateContentController extends GetxController {
   late final Rx<Category> selectedCategory;
   final RxBool loadingGenre = RxBool(false);
   final RxBool loading = RxBool(false);
+  final Rx<String?> message = Rx(null);
   final RxList<Genre> addedGenres = RxList<Genre>();
   final RxList<Genre> genreData = RxList<Genre>();
   final RxList<String> alternateTitles = RxList();
@@ -22,6 +24,7 @@ class CreateContentController extends GetxController {
 
   final ContentService _contentService;
   final FileService _fileService;
+  String _status = '';
 
   CreateContentController(this._contentService, this._fileService);
 
@@ -68,7 +71,7 @@ class CreateContentController extends GetxController {
     _resetAlternateField();
   }
 
-  void postContent() async {
+  Future<Result> postContent() async {
     loading(true);
     final String title = this.title.value.text;
     final String description = this.description.value.text;
@@ -76,14 +79,18 @@ class CreateContentController extends GetxController {
       addedGenres.map((element) => element.id),
     );
     final String category = selectedCategory.value.id;
-    final coverImage =
-        (this.coverImage.value.isNotEmpty) ? this.coverImage.value : null;
+    String? coverImage;
 
-    print("File url = ${this.coverImage.value}");
-    try {
-      await _fileService.uploadImage(this.coverImage.value);
-    } catch (e) {
-      print(e.toString());
+    if (this.coverImage.value.isNotEmpty) {
+      try {
+        _status = 'Uploading Image';
+        String uploadedImageLink = await _fileService.uploadImage(
+            this.coverImage.value, _uploadProgress);
+        coverImage = uploadedImageLink;
+        print(uploadedImageLink);
+      } catch (e) {
+        coverImage = null;
+      }
     }
 
     List<String>? tags;
@@ -103,8 +110,19 @@ class CreateContentController extends GetxController {
       tags: tags,
       coverImage: coverImage,
     );
+    _status = 'Uploading Post';
+    final status = await _contentService.postContent(request.toJson(),
+        progress: _uploadProgress);
 
-    _contentService.postContent(request.toJson());
     loading(false);
+    if (status != null) {
+      return Result(true, 'Metadata Added');
+    } else {
+      return Result(false, 'Something Went Wrong');
+    }
+  }
+
+  void _uploadProgress(percentage) {
+    message.value = '$_status $percentage%';
   }
 }

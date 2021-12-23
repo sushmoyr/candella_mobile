@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:candella/app/data/controllers/create_content_controller.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
+import 'package:candella/app/ui/screens/error_page.dart';
 import 'package:candella/app/ui/widgets/loader.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:candella/app/ui/widgets/title_only_appbar.dart';
@@ -24,7 +25,17 @@ class CreateContentScreen extends GetView<CreateContentController> {
       body: Obx(
         () => AnimatedCrossFade(
           firstChild: Center(
-            child: CircularProgressIndicator(),
+            child: Column(
+              children: [
+                CircularProgressIndicator(),
+                (controller.message.value != null)
+                    ? Text(
+                        controller.message.value!,
+                        style: Theme.of(context).textTheme.caption,
+                      )
+                    : Container()
+              ],
+            ),
           ),
           secondChild: SafeArea(
             child: Padding(
@@ -224,7 +235,7 @@ class CreateContentScreen extends GetView<CreateContentController> {
     }
   }
 
-  void _handleSubmitContent() {
+  void _handleSubmitContent() async {
     var state = _formKey.currentState;
 
     if (state != null && state.validate()) {
@@ -235,10 +246,13 @@ class CreateContentScreen extends GetView<CreateContentController> {
         ));
         return;
       }
-      controller.postContent();
-      Future.delayed(
-        Duration(seconds: 3),
-      ).then((value) => controller.loading.value = false);
+      var result = await controller.postContent();
+
+      if (!result.status) {
+        Get.to(ErrorScreen());
+      } else {
+        Get.toNamed(Routes.addChapter);
+      }
     }
   }
 

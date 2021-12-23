@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:candella/app/data/models/interfaces/api_result.dart';
 
+import 'User.dart';
+
 class Success implements ApiResult {
   @override
   int code;

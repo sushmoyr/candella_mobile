@@ -29,7 +29,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                       if (loading == null) {
                         return widget;
                       }
-                      return Image.network(
+                      return Image.asset(
                           StringRes.defaultCoverImage); //TODO: Add asset image
                     },
                   ),

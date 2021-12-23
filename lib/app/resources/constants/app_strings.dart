@@ -16,8 +16,7 @@ class StringRes {
 
   static const String defaultProfileUrl =
       'https://candella.herokuapp.com/images/avatar.png';
-  static const String defaultCoverImage =
-      'https://candella.herokuapp.com/images/default_cover.png';
+  static const String defaultCoverImage = 'assets/images/default_cover.png';
 
   static String currentUserKey = 'current_user_key';
 

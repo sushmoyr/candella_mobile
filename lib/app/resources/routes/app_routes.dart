@@ -5,6 +5,7 @@ abstract class Routes {
   static const extras = '/extras';
   static const home = '/home';
   static const createContent = '/create_content';
+  static const addChapter = '/add_chapter';
 
   static String selectGenre = '/select_genre';
 }

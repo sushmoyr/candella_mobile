@@ -6,6 +6,7 @@ import 'package:candella/app/data/bindings/main_screen_binding.dart';
 import 'package:candella/app/data/bindings/profile_screen_binding.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/services/prefs.dart';
+import 'package:candella/app/ui/screens/add_chapter.dart';
 import 'package:candella/app/ui/screens/auth_page.dart';
 import 'package:candella/app/ui/screens/create_content_screen.dart';
 import 'package:candella/app/ui/screens/extras_screen.dart';
@@ -62,6 +63,12 @@ class AppPages {
       transition: Transition.downToUp,
       curve: Curves.decelerate,
     ),
+    GetPage(
+      name: Routes.addChapter,
+      page: () => AddChapterScreen(),
+      transition: Transition.rightToLeft,
+      curve: Curves.decelerate,
+    )
   ];
 
   static String _getInitialRoute() {
