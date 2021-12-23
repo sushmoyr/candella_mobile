@@ -9,6 +9,7 @@ import 'package:candella/app/services/prefs.dart';
 import 'package:candella/app/ui/screens/add_chapter.dart';
 import 'package:candella/app/ui/screens/auth_page.dart';
 import 'package:candella/app/ui/screens/create_content_screen.dart';
+import 'package:candella/app/ui/screens/edit_profile_screen.dart';
 import 'package:candella/app/ui/screens/extras_screen.dart';
 import 'package:candella/app/ui/screens/genre_selector.dart';
 import 'package:candella/app/ui/screens/main/home_screen.dart';
@@ -46,6 +47,13 @@ class AppPages {
     GetPage(
       name: Routes.profile,
       page: () => ProfileScreen(),
+      transition: Transition.rightToLeft,
+      curve: Curves.decelerate,
+      binding: ProfileScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.editProfile,
+      page: () => EditProfile(),
       transition: Transition.rightToLeft,
       curve: Curves.decelerate,
       binding: ProfileScreenBinding(),

@@ -10,6 +10,7 @@ class ValueCard extends StatelessWidget {
   final Alignment? alignment;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
+  final VoidCallback? onClick;
 
   const ValueCard({
     Key? key,
@@ -22,6 +23,7 @@ class ValueCard extends StatelessWidget {
     this.padding,
     this.margin,
     this.valueWidget,
+    this.onClick,
   }) : super(key: key);
 
   @override
@@ -35,27 +37,30 @@ class ValueCard extends StatelessWidget {
       alignment: alignment ?? Alignment.center,
       padding: padding ?? EdgeInsets.all(16),
       margin: margin ?? EdgeInsets.zero,
-      child: Wrap(
-        direction: direction ?? Axis.vertical,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          SizedBox(
-            height: 36,
-            child: (valueWidget != null)
-                ? Center(child: valueWidget!)
-                : Center(
-                    child: Text(
-                      modifiedValue,
-                      style: valueTextStyle ??
-                          Theme.of(context).textTheme.headline6,
+      child: InkWell(
+        onTap: onClick,
+        child: Wrap(
+          direction: direction ?? Axis.vertical,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            SizedBox(
+              height: 36,
+              child: (valueWidget != null)
+                  ? Center(child: valueWidget!)
+                  : Center(
+                      child: Text(
+                        modifiedValue,
+                        style: valueTextStyle ??
+                            Theme.of(context).textTheme.headline6,
+                      ),
                     ),
-                  ),
-          ),
-          Text(
-            name,
-            style: nameTextStyle ?? Theme.of(context).textTheme.subtitle2,
-          )
-        ],
+            ),
+            Text(
+              name,
+              style: nameTextStyle ?? Theme.of(context).textTheme.subtitle2,
+            )
+          ],
+        ),
       ),
     );
   }

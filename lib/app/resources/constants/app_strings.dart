@@ -21,6 +21,10 @@ class StringRes {
   static String currentUserKey = 'current_user_key';
 
   static String notAdded = 'Not Added';
+  static String noPenName = 'Pen name not added';
+  static String noBio = 'Bio not added';
+  static String noPhone = 'Phone not added';
+  static String noAddress = 'Address not added';
 
   static String defaultContentCover = 'assets/images/default_content_cover.png';
 }

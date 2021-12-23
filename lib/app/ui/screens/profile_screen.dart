@@ -1,9 +1,9 @@
 import 'package:candella/app/data/controllers/profile_screen_controller.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
+import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/ui/widgets/expandable_card.dart';
 import 'package:candella/app/ui/widgets/loader.dart';
-import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:candella/app/ui/widgets/value_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,8 +29,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                       if (loading == null) {
                         return widget;
                       }
-                      return Image.asset(
-                          StringRes.defaultCoverImage); //TODO: Add asset image
+                      return Image.asset(StringRes.defaultCoverImage);
                     },
                   ),
                   SizedBox(
@@ -87,15 +86,13 @@ class ProfileScreen extends GetView<ProfileScreenController> {
               Expanded(
                 child: (controller.profileType == ProfileType.self)
                     ? ValueCard(
+                        valueWidget: Icon(Ionicons.pencil_outline),
+                        name: 'Edit Profile',
+                        onClick: _handleEditButton,
+                      )
+                    : ValueCard(
                         valueWidget: Icon(Ionicons.person_add_outline),
                         name: "Follow",
-                      )
-                    : AppIconButton(
-                        iconSize: 36,
-                        iconData: Ionicons.ellipsis_horizontal_circle_outline,
-                        onTap: () {
-                          print('more tapped');
-                        },
                       ),
               ),
             ],
@@ -173,5 +170,10 @@ class ProfileScreen extends GetView<ProfileScreenController> {
         ),
       ),
     );
+  }
+
+  void _handleEditButton() {
+    printInfo(info: 'edit button clicked');
+    Get.toNamed(Routes.editProfile);
   }
 }

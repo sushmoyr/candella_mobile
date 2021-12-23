@@ -15,8 +15,10 @@ class AuthController extends GetxController {
 
   final formType = FormType.signIn.obs;
   late TextEditingController nameController = TextEditingController();
-  late TextEditingController emailController = TextEditingController();
-  late TextEditingController passwordController = TextEditingController();
+  late TextEditingController emailController =
+      TextEditingController(text: 'fscott@candella.com');
+  late TextEditingController passwordController =
+      TextEditingController(text: '404AdminPass');
 
   var obSecure = true.obs;
   var isLoading = false.obs;

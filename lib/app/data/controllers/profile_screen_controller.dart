@@ -2,6 +2,7 @@ import 'package:candella/app/data/models/User.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/services/UserService.dart';
 import 'package:candella/app/services/prefs.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class ProfileScreenController extends GetxController {
@@ -9,8 +10,22 @@ class ProfileScreenController extends GetxController {
   ProfileType profileType = ProfileType.self;
 
   ProfileScreenController(this._userService);
+
   var loading = RxBool(false);
   var user = Rx<User>(User());
+
+  //edit page data
+  final Rx<String?> coverImage = Rx(null);
+  final Rx<String?> profileImage = Rx(null);
+  final name = TextEditingController();
+  final email = TextEditingController();
+  final oldPassword = TextEditingController();
+  final newPassword = TextEditingController();
+  final confirmPassword = TextEditingController();
+  final penName = TextEditingController();
+  final bio = TextEditingController();
+  final phone = TextEditingController();
+  final address = TextEditingController();
 
   void loadUser(String? id) async {
     loading(true);
@@ -54,9 +69,16 @@ class ProfileScreenController extends GetxController {
       profileType = ProfileType.other;
       _userService.getUserFromId(id);
     }
+
+    _updateInputControllers();
   }
 
   void updateUser() async {}
+
+  void _updateInputControllers() {
+    name.text = user.value.name;
+    email.text = user.value.email!;
+  }
 
   void _saveCurrentUserToMemory(User user) {
     Prefs.saveUser(user.toRawJson());

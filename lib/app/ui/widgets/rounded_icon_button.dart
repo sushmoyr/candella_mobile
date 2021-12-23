@@ -11,18 +11,20 @@ class AppIconButton extends StatelessWidget {
   final Color? color;
   final Color? iconColor;
   final double? elevation;
+  final bool addBorder;
 
-  const AppIconButton(
-      {Key? key,
-      this.mode = IconButtonMode.original,
-      required this.onTap,
-      required this.iconData,
-      this.iconSize,
-      this.color,
-      this.contentPadding,
-      this.elevation,
-      this.iconColor})
-      : super(key: key);
+  const AppIconButton({
+    Key? key,
+    this.mode = IconButtonMode.original,
+    required this.onTap,
+    required this.iconData,
+    this.iconSize,
+    this.color,
+    this.contentPadding,
+    this.elevation,
+    this.iconColor,
+    this.addBorder = false,
+  }) : super(key: key);
 
   Widget _getIconButton(context) {
     return IconButton(
@@ -50,9 +52,12 @@ class AppIconButton extends StatelessWidget {
             padding: EdgeInsets.all(contentPadding ?? 0),
             child: _getIconButton(context),
             decoration: BoxDecoration(
-                color: color ?? Theme.of(context).primaryColor,
-                borderRadius:
-                    BorderRadius.all(Radius.circular((iconSize ?? 24) * 2))),
+              color: color ?? Theme.of(context).primaryColor,
+              border: (addBorder) ? Border.all(width: 0.8) : null,
+              borderRadius: BorderRadius.all(
+                Radius.circular((iconSize ?? 24) * 2),
+              ),
+            ),
           ),
         ),
       );

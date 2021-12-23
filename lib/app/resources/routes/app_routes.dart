@@ -8,4 +8,6 @@ abstract class Routes {
   static const addChapter = '/add_chapter';
 
   static String selectGenre = '/select_genre';
+
+  static var editProfile = '/edit_profile';
 }
