@@ -6,6 +6,7 @@ import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
 class EditProfile extends GetView<ProfileScreenController> {
@@ -29,21 +30,23 @@ class EditProfile extends GetView<ProfileScreenController> {
             children: [
               Column(
                 children: [
-                  (controller.coverImage.value != null)
-                      ? Image.file(
-                          File(controller.coverImage.value!),
-                        )
-                      : Image.network(
-                          controller.user.value.coverImage,
-                          loadingBuilder: (context, widget, loading) {
-                            if (loading == null) {
-                              return widget;
-                            }
-                            return Image.asset(
-                              StringRes.defaultCoverImage,
-                            );
-                          },
-                        ),
+                  Obx(
+                    () => (controller.coverImage.value != null)
+                        ? Image.file(
+                            File(controller.coverImage.value!),
+                          )
+                        : Image.network(
+                            controller.user.value.coverImage,
+                            loadingBuilder: (context, widget, loading) {
+                              if (loading == null) {
+                                return widget;
+                              }
+                              return Image.asset(
+                                StringRes.defaultCoverImage,
+                              );
+                            },
+                          ),
+                  ), //Cover Image
                   SizedBox(
                     height: 64,
                   ),
@@ -61,7 +64,7 @@ class EditProfile extends GetView<ProfileScreenController> {
                         .colorScheme
                         .onPrimary
                         .withOpacity(0.5),
-                    onTap: () {},
+                    onTap: _uploadCoverPhoto,
                     iconSize: 20,
                     contentPadding: 0,
                     iconData: Ionicons.camera_outline,
@@ -69,20 +72,22 @@ class EditProfile extends GetView<ProfileScreenController> {
                   ),
                 ),
               ),
-              ClipOval(
-                child: CircleAvatar(
-                  child: (controller.profileImage.value != null)
-                      ? Image.file(File(controller.profileImage.value!))
-                      : Image.network(
-                          controller.user.value.profileImage,
-                          loadingBuilder: (context, child, loading) {
-                            if (loading == null) {
-                              return child;
-                            }
-                            return CircularProgressIndicator();
-                          },
-                        ),
-                  radius: 64,
+              Obx(
+                () => ClipOval(
+                  child: CircleAvatar(
+                    child: (controller.profileImage.value != null)
+                        ? Image.file(File(controller.profileImage.value!))
+                        : Image.network(
+                            controller.user.value.profileImage,
+                            loadingBuilder: (context, child, loading) {
+                              if (loading == null) {
+                                return child;
+                              }
+                              return CircularProgressIndicator();
+                            },
+                          ),
+                    radius: 64,
+                  ),
                 ),
               ),
               Align(
@@ -95,7 +100,7 @@ class EditProfile extends GetView<ProfileScreenController> {
                         .colorScheme
                         .onPrimary
                         .withOpacity(0.5),
-                    onTap: () {},
+                    onTap: _uploadProfilePhoto,
                     iconSize: 20,
                     contentPadding: 0,
                     iconData: Ionicons.camera_outline,
@@ -116,8 +121,23 @@ class EditProfile extends GetView<ProfileScreenController> {
                     //Auth info card
                     EditableCard(
                       title: 'Update Sign-in Info',
-                      onCancelClick: _handleCancelAction,
-                      onUpdateClick: _handleUpdateAction,
+                      footer: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                            onPressed: _handleUpdateAction,
+                            child: Text('Update'),
+                          ),
+                          TextButton(
+                            onPressed: _handleCancelAction,
+                            child: Text('Cancel'),
+                          )
+                        ],
+                      ),
                       children: [
                         EditableCardItem.from(
                           defaultWidget: Text(
@@ -152,132 +172,130 @@ class EditProfile extends GetView<ProfileScreenController> {
                       ],
                     ),
                     //About Info Card
+                    Obx(
+                      () => EditableCard(
+                        title: 'Update About Info',
+                        children: [
+                          EditableCardItem.from(
+                            defaultWidget: Text(
+                              controller.name.value.text,
+                              style: textStyle,
+                            ),
+                            editableWidget: TextFormField(
+                              readOnly: true,
+                              controller: controller.name,
+                            ),
+                          ),
+                          EditableCardItem.from(
+                            defaultWidget: Text(
+                              controller.penName.text,
+                              style: textStyle,
+                            ),
+                            editableWidget: TextFormField(
+                              controller: controller.penName,
+                            ),
+                          ),
+                          EditableCardItem.from(
+                            defaultWidget: Text(
+                              controller.bio.text,
+                              style: textStyle,
+                            ),
+                            editableWidget: TextFormField(
+                              controller: controller.bio,
+                            ),
+                          ),
+                          EditableCardItem.from(
+                            defaultWidget: Text(
+                              controller.gender.text,
+                              style: textStyle,
+                            ),
+                            editableWidget: DropdownButtonFormField<String>(
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text(Gender.male),
+                                  value: Gender.male,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text(Gender.female),
+                                  value: Gender.female,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text(Gender.notSpecified),
+                                  value: Gender.notSpecified,
+                                ),
+                              ],
+                              value: controller.user.value.gender,
+                              onChanged: (value) {
+                                controller.gender.text = value!;
+                              },
+                            ),
+                          ),
+                          EditableCardItem.from(
+                            defaultWidget: Text(
+                              controller.user.value.birthdate,
+                              style: textStyle,
+                            ),
+                            editableWidget: InkWell(
+                              onTap: () async {
+                                var currentBirthday = controller.getBirthDate();
+                                var dateTime = await showDatePicker(
+                                  context: context,
+                                  initialDate: currentBirthday,
+                                  firstDate: DateTime(1700),
+                                  lastDate: DateTime(2011),
+                                );
+                                if (dateTime != null) {
+                                  controller.birthdate.value =
+                                      "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(width: 0.5),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Obx(() => Text(controller.birthdate.value ??
+                                        controller.user.value.birthdate)),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Icon(Ionicons.calendar_clear_outline),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     EditableCard(
-                      title: 'Update About Info',
-                      onCancelClick: _handleCancelAction,
-                      onUpdateClick: _handleUpdateAction,
+                      title: 'Update Contact Info',
                       children: [
                         EditableCardItem.from(
                           defaultWidget: Text(
-                            controller.user.value.name,
+                            controller.user.value.phone ?? StringRes.noPhone,
                             style: textStyle,
                           ),
                           editableWidget: TextFormField(
-                            readOnly: true,
-                            controller: controller.name,
+                            controller: controller.phone,
                           ),
                         ),
                         EditableCardItem.from(
                           defaultWidget: Text(
-                            controller.user.value.penName ??
-                                StringRes.noPenName,
+                            controller.user.value.address ??
+                                StringRes.noAddress,
                             style: textStyle,
                           ),
                           editableWidget: TextFormField(
-                            controller: controller.penName,
-                          ),
-                        ),
-                        EditableCardItem.from(
-                          defaultWidget: Text(
-                            controller.user.value.bio ?? StringRes.noBio,
-                            style: textStyle,
-                          ),
-                          editableWidget: TextFormField(
-                            controller: controller.bio,
-                          ),
-                        ),
-                        EditableCardItem.from(
-                          defaultWidget: Text(
-                            controller.user.value.gender,
-                            style: textStyle,
-                          ),
-                          editableWidget: DropdownButtonFormField<String>(
-                            items: [
-                              DropdownMenuItem(
-                                child: Text(Gender.male),
-                                value: Gender.male,
-                              ),
-                              DropdownMenuItem(
-                                child: Text(Gender.female),
-                                value: Gender.female,
-                              ),
-                              DropdownMenuItem(
-                                child: Text(Gender.notSpecified),
-                                value: Gender.notSpecified,
-                              ),
-                            ],
-                            value: controller.user.value.gender,
-                            onChanged: (value) {
-                              controller.gender.text = value!;
-                            },
-                          ),
-                        ),
-                        EditableCardItem.from(
-                          defaultWidget: Text(
-                            controller.user.value.birthdate,
-                            style: textStyle,
-                          ),
-                          editableWidget: InkWell(
-                            onTap: () async {
-                              var currentBirthday = controller.getBirthDate();
-                              var dateTime = await showDatePicker(
-                                context: context,
-                                initialDate: currentBirthday,
-                                firstDate: DateTime(1700),
-                                lastDate: DateTime(2011),
-                              );
-                              if (dateTime != null) {
-                                controller.birthdate.value =
-                                    "${dateTime.day}/${dateTime.month}/${dateTime.year}";
-                              }
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(width: 0.5),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Obx(() => Text(controller.birthdate.value ??
-                                      controller.user.value.birthdate)),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Icon(Ionicons.calendar_clear_outline),
-                                ],
-                              ),
-                            ),
+                            controller: controller.address,
                           ),
                         ),
                       ],
                     ),
-                    EditableCard(
-                        title: 'Update Contact Info',
-                        children: [
-                          EditableCardItem.from(
-                            defaultWidget: Text(
-                              controller.user.value.phone ?? StringRes.noPhone,
-                              style: textStyle,
-                            ),
-                            editableWidget: TextFormField(
-                              controller: controller.phone,
-                            ),
-                          ),
-                          EditableCardItem.from(
-                            defaultWidget: Text(
-                              controller.user.value.address ??
-                                  StringRes.noAddress,
-                              style: textStyle,
-                            ),
-                            editableWidget: TextFormField(
-                              controller: controller.address,
-                            ),
-                          ),
-                        ],
-                        onUpdateClick: _handleUpdateAction,
-                        onCancelClick: _handleCancelAction),
                   ],
                 ),
               ),
@@ -295,6 +313,30 @@ class EditProfile extends GetView<ProfileScreenController> {
   void _handleCancelAction() {
     printInfo(info: 'Cancel Button Clicked');
   }
+
+  void _uploadCoverPhoto() async {
+    var picked = await ImagesPicker.pick(
+        quality: 0.8,
+        cropOpt: CropOption(
+          aspectRatio: CropAspectRatio(3, 2),
+        ));
+
+    if (picked != null) {
+      controller.coverImage.value = picked.first.path;
+    }
+  }
+
+  void _uploadProfilePhoto() async {
+    var picked = await ImagesPicker.pick(
+        quality: 0.8,
+        cropOpt: CropOption(
+          aspectRatio: CropAspectRatio(1, 1),
+        ));
+
+    if (picked != null) {
+      controller.profileImage.value = picked.first.path;
+    }
+  }
 }
 
 enum EditableCardState { edit, view }
@@ -302,16 +344,11 @@ enum EditableCardState { edit, view }
 class EditableCard extends StatefulWidget {
   final String title;
   final List<EditableCardItem> children;
-  final VoidCallback onUpdateClick;
-  final VoidCallback onCancelClick;
+  final Widget? footer;
   final bool enabled = true;
 
   const EditableCard(
-      {Key? key,
-      required this.title,
-      required this.children,
-      required this.onUpdateClick,
-      required this.onCancelClick})
+      {Key? key, required this.title, required this.children, this.footer})
       : super(key: key);
 
   @override
@@ -358,24 +395,7 @@ class _EditableCardState extends State<EditableCard> {
             ),
           ),
         ),
-        if (isEditing)
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              OutlinedButton(
-                onPressed: (widget.enabled) ? widget.onUpdateClick : null,
-                child: Text('Update'),
-              ),
-              SizedBox(
-                width: 16,
-              ),
-              TextButton(
-                onPressed: (widget.enabled) ? widget.onCancelClick : null,
-                child: Text('Cancel'),
-              ),
-            ],
-          ),
+        (isEditing && widget.footer != null) ? widget.footer! : Container()
       ],
     );
   }

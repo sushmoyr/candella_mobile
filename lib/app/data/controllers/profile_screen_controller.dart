@@ -82,6 +82,7 @@ class ProfileScreenController extends GetxController {
     email.text = user.value.email!;
     penName.text = user.value.penName ?? '';
     bio.text = user.value.bio ?? '';
+    gender.text = user.value.gender;
     phone.text = user.value.phone ?? '';
     address.text = user.value.address ?? '';
   }
