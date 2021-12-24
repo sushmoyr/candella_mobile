@@ -146,6 +146,7 @@ class EditProfile extends GetView<ProfileScreenController> {
                           ),
                           editableWidget: TextFormField(
                             controller: controller.email,
+                            decoration: InputDecoration(labelText: 'Email'),
                           ),
                         ),
                         EditableCardItem.from(
@@ -182,8 +183,10 @@ class EditProfile extends GetView<ProfileScreenController> {
                               style: textStyle,
                             ),
                             editableWidget: TextFormField(
-                              readOnly: true,
                               controller: controller.name,
+                              decoration: InputDecoration(
+                                labelText: 'Name',
+                              ),
                             ),
                           ),
                           EditableCardItem.from(
@@ -193,6 +196,9 @@ class EditProfile extends GetView<ProfileScreenController> {
                             ),
                             editableWidget: TextFormField(
                               controller: controller.penName,
+                              decoration: InputDecoration(
+                                labelText: 'Pen Name',
+                              ),
                             ),
                           ),
                           EditableCardItem.from(
@@ -202,6 +208,9 @@ class EditProfile extends GetView<ProfileScreenController> {
                             ),
                             editableWidget: TextFormField(
                               controller: controller.bio,
+                              decoration: InputDecoration(
+                                labelText: 'Bio',
+                              ),
                             ),
                           ),
                           EditableCardItem.from(
@@ -225,6 +234,9 @@ class EditProfile extends GetView<ProfileScreenController> {
                                 ),
                               ],
                               value: controller.user.value.gender,
+                              decoration: InputDecoration(
+                                labelText: 'Gender',
+                              ),
                               onChanged: (value) {
                                 controller.gender.text = value!;
                               },
@@ -282,6 +294,9 @@ class EditProfile extends GetView<ProfileScreenController> {
                           ),
                           editableWidget: TextFormField(
                             controller: controller.phone,
+                            decoration: InputDecoration(
+                              labelText: 'Phone',
+                            ),
                           ),
                         ),
                         EditableCardItem.from(
@@ -291,6 +306,9 @@ class EditProfile extends GetView<ProfileScreenController> {
                           ),
                           editableWidget: TextFormField(
                             controller: controller.address,
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                            ),
                           ),
                         ),
                       ],
@@ -304,6 +322,7 @@ class EditProfile extends GetView<ProfileScreenController> {
                         ),
                         AppIconButton(
                             mode: IconButtonMode.rounded,
+                            iconColor: Theme.of(context).colorScheme.onPrimary,
                             elevation: 8,
                             onTap: () {},
                             iconData: Ionicons.arrow_forward)
