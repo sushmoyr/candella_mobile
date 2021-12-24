@@ -232,7 +232,7 @@ class EditProfile extends GetView<ProfileScreenController> {
                           ),
                           EditableCardItem.from(
                             defaultWidget: Text(
-                              controller.user.value.birthdate,
+                              controller.birthdate.value!,
                               style: textStyle,
                             ),
                             editableWidget: InkWell(
@@ -277,7 +277,7 @@ class EditProfile extends GetView<ProfileScreenController> {
                       children: [
                         EditableCardItem.from(
                           defaultWidget: Text(
-                            controller.user.value.phone ?? StringRes.noPhone,
+                            controller.phone.text,
                             style: textStyle,
                           ),
                           editableWidget: TextFormField(
@@ -286,8 +286,7 @@ class EditProfile extends GetView<ProfileScreenController> {
                         ),
                         EditableCardItem.from(
                           defaultWidget: Text(
-                            controller.user.value.address ??
-                                StringRes.noAddress,
+                            controller.address.text,
                             style: textStyle,
                           ),
                           editableWidget: TextFormField(
@@ -296,6 +295,20 @@ class EditProfile extends GetView<ProfileScreenController> {
                         ),
                       ],
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Update',
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                        AppIconButton(
+                            mode: IconButtonMode.rounded,
+                            elevation: 8,
+                            onTap: () {},
+                            iconData: Ionicons.arrow_forward)
+                      ],
+                    )
                   ],
                 ),
               ),

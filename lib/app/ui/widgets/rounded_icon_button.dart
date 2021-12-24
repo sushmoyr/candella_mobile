@@ -32,7 +32,7 @@ class AppIconButton extends StatelessWidget {
       icon: Icon(
         iconData,
         size: iconSize,
-        color: iconColor,
+        color: iconColor ?? Theme.of(context).colorScheme.onPrimary,
       ),
     );
   }

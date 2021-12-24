@@ -1,4 +1,5 @@
 import 'package:candella/app/data/models/User.dart';
+import 'package:candella/app/resources/constants/app_strings.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/services/UserService.dart';
 import 'package:candella/app/services/prefs.dart';
@@ -80,11 +81,12 @@ class ProfileScreenController extends GetxController {
   void _updateInputControllers() {
     name.text = user.value.name;
     email.text = user.value.email!;
-    penName.text = user.value.penName ?? '';
-    bio.text = user.value.bio ?? '';
+    penName.text = user.value.penName ?? StringRes.noPenName;
+    bio.text = user.value.bio ?? StringRes.noBio;
     gender.text = user.value.gender;
-    phone.text = user.value.phone ?? '';
-    address.text = user.value.address ?? '';
+    phone.text = user.value.phone ?? StringRes.noPhone;
+    birthdate.value = user.value.birthdate;
+    address.text = user.value.address ?? StringRes.noAddress;
   }
 
   DateTime getBirthDate() {
