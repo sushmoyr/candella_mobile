@@ -26,6 +26,8 @@ class ProfileScreenController extends GetxController {
   final bio = TextEditingController();
   final phone = TextEditingController();
   final address = TextEditingController();
+  final gender = TextEditingController();
+  Rx<String?> birthdate = Rx(null);
 
   void loadUser(String? id) async {
     loading(true);
@@ -78,6 +80,21 @@ class ProfileScreenController extends GetxController {
   void _updateInputControllers() {
     name.text = user.value.name;
     email.text = user.value.email!;
+    penName.text = user.value.penName ?? '';
+    bio.text = user.value.bio ?? '';
+    phone.text = user.value.phone ?? '';
+    address.text = user.value.address ?? '';
+  }
+
+  DateTime getBirthDate() {
+    String date = birthdate.value ?? user.value.birthdate;
+    var dateArray = date.split('/');
+    print(dateArray);
+    return DateTime(
+      int.parse(dateArray[2]),
+      int.parse(dateArray[1]),
+      int.parse(dateArray[0]),
+    );
   }
 
   void _saveCurrentUserToMemory(User user) {

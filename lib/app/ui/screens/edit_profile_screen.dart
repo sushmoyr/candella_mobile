@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:candella/app/data/controllers/profile_screen_controller.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
+import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -114,20 +115,10 @@ class EditProfile extends GetView<ProfileScreenController> {
                   children: [
                     //Auth info card
                     EditableCard(
-                      title: 'Update Primary Info',
+                      title: 'Update Sign-in Info',
                       onCancelClick: _handleCancelAction,
                       onUpdateClick: _handleUpdateAction,
                       children: [
-                        EditableCardItem.from(
-                          defaultWidget: Text(
-                            controller.user.value.name,
-                            style: textStyle,
-                          ),
-                          editableWidget: TextFormField(
-                            readOnly: true,
-                            controller: controller.name,
-                          ),
-                        ),
                         EditableCardItem.from(
                           defaultWidget: Text(
                             controller.user.value.email!,
@@ -160,11 +151,22 @@ class EditProfile extends GetView<ProfileScreenController> {
                         ),
                       ],
                     ),
+                    //About Info Card
                     EditableCard(
                       title: 'Update About Info',
                       onCancelClick: _handleCancelAction,
                       onUpdateClick: _handleUpdateAction,
                       children: [
+                        EditableCardItem.from(
+                          defaultWidget: Text(
+                            controller.user.value.name,
+                            style: textStyle,
+                          ),
+                          editableWidget: TextFormField(
+                            readOnly: true,
+                            controller: controller.name,
+                          ),
+                        ),
                         EditableCardItem.from(
                           defaultWidget: Text(
                             controller.user.value.penName ??
@@ -189,8 +191,25 @@ class EditProfile extends GetView<ProfileScreenController> {
                             controller.user.value.gender,
                             style: textStyle,
                           ),
-                          editableWidget: TextFormField(
-                            controller: controller.bio, //TODO add gender picker
+                          editableWidget: DropdownButtonFormField<String>(
+                            items: [
+                              DropdownMenuItem(
+                                child: Text(Gender.male),
+                                value: Gender.male,
+                              ),
+                              DropdownMenuItem(
+                                child: Text(Gender.female),
+                                value: Gender.female,
+                              ),
+                              DropdownMenuItem(
+                                child: Text(Gender.notSpecified),
+                                value: Gender.notSpecified,
+                              ),
+                            ],
+                            value: controller.user.value.gender,
+                            onChanged: (value) {
+                              controller.gender.text = value!;
+                            },
                           ),
                         ),
                         EditableCardItem.from(
@@ -198,8 +217,38 @@ class EditProfile extends GetView<ProfileScreenController> {
                             controller.user.value.birthdate,
                             style: textStyle,
                           ),
-                          editableWidget: TextFormField(
-                            controller: controller.bio, //Add birthdate
+                          editableWidget: InkWell(
+                            onTap: () async {
+                              var currentBirthday = controller.getBirthDate();
+                              var dateTime = await showDatePicker(
+                                context: context,
+                                initialDate: currentBirthday,
+                                firstDate: DateTime(1700),
+                                lastDate: DateTime(2011),
+                              );
+                              if (dateTime != null) {
+                                controller.birthdate.value =
+                                    "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(width: 0.5),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Obx(() => Text(controller.birthdate.value ??
+                                      controller.user.value.birthdate)),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Icon(Ionicons.calendar_clear_outline),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
