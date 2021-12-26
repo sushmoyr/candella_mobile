@@ -54,6 +54,8 @@ Category getCategoryById(String id) {
   throw Exception('There is no category with id: $id');
 }
 
+enum ChapterMode { photography, comic, other }
+
 /*
 [{
   "_id": {

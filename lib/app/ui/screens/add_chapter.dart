@@ -7,6 +7,7 @@ import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:candella/app/ui/widgets/title_only_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
 class AddChapterScreen extends GetView<AddChapterController> {
@@ -18,6 +19,18 @@ class AddChapterScreen extends GetView<AddChapterController> {
   Widget build(BuildContext context) {
     printInfo(info: contentCategory);
     Category category = getCategoryById(contentCategory);
+    List<Widget> editor;
+    if (category == Category.photography) {
+      editor = _getPhotographyChapter();
+      controller.mode = ChapterMode.photography;
+    } else if (category == Category.comic) {
+      editor = _getComicChapter();
+      controller.mode = ChapterMode.comic;
+    } else {
+      editor = _getDefaultChapter();
+      controller.mode = ChapterMode.other;
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -33,7 +46,7 @@ class AddChapterScreen extends GetView<AddChapterController> {
                 },
               ),
               ..._getCommonWidgets(),
-              ..._getPhotographyChapter(),
+              ...editor,
               Align(
                   alignment: Alignment.centerRight,
                   child: AppIconButton(
@@ -69,6 +82,16 @@ class AddChapterScreen extends GetView<AddChapterController> {
     ];
   }
 
+  List<Widget> _getComicChapter() {
+    return [
+      Expanded(
+        child: Obx(
+          () => ListView(),
+        ),
+      ),
+    ];
+  }
+
   List<Widget> _getPhotographyChapter() {
     return [
       TextFormField(
@@ -77,35 +100,57 @@ class AddChapterScreen extends GetView<AddChapterController> {
         ),
       ),
       Expanded(
-        child: ListView(
-          children: [
-            ...controller.imageInputs.map(
-              (e) => _getPhotoInputWidget(e),
-            ),
-            OutlinedButton(
-              onPressed: _uploadImage,
-              child: Text('Add Image'),
-            ),
-          ],
+        child: Obx(
+          () => ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              ...controller.imageInputs.map(
+                (e) => _getPhotoInputWidget(e),
+              ),
+              OutlinedButton(
+                onPressed: _uploadImage,
+                child: Text('Add Image'),
+              ),
+            ],
+          ),
         ),
       ),
     ];
   }
 
-  void _uploadImage() {}
+  void _uploadImage() async {
+    var picker = await ImagesPicker.pick(
+      count: 10,
+    );
+
+    if (picker != null) {
+      controller.addImagesPath(
+        picker.map((e) => e.path).toList(),
+      );
+    }
+  }
 
   Widget _getPhotoInputWidget(ImageContentInputController e) {
-    return Card(
-      child: Column(
-        children: [
-          Image.file(File(e.imageUrl)),
-          TextFormField(
-            controller: e.caption,
-            decoration: InputDecoration(
-              labelText: 'Caption',
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 4,
+        child: Column(
+          children: [
+            Image.file(File(e.imageUrl)),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextFormField(
+                controller: e.caption,
+                decoration: InputDecoration(
+                  labelText: 'Caption',
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
