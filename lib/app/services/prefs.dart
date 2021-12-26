@@ -16,6 +16,10 @@ class Prefs {
     _storage.write(StringRes.currentUserKey, user);
   }
 
+  static void deleteUser() {
+    _storage.remove(StringRes.currentUserKey);
+  }
+
   static String? getCurrentUser() {
     return _storage.read(StringRes.currentUserKey);
   }

@@ -9,18 +9,23 @@ class Loader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(isLoading);
     return (isLoading)
-        ? Column(
-            children: [
-              CircularProgressIndicator(),
-              (message != null)
-                  ? Text(
-                      message!,
-                      style: Theme.of(context).textTheme.caption,
-                    )
-                  : Container()
-            ],
+        ? Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 8),
+                (message != null)
+                    ? Text(
+                        message!,
+                        style: Theme.of(context).textTheme.caption,
+                      )
+                    : Container()
+              ],
+            ),
           )
         : child ?? Container();
   }

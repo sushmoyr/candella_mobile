@@ -4,7 +4,6 @@ import 'package:candella/app/data/controllers/create_content_controller.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/ui/screens/error_page.dart';
-import 'package:candella/app/ui/widgets/loader.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:candella/app/ui/widgets/title_only_appbar.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +25,9 @@ class CreateContentScreen extends GetView<CreateContentController> {
         () => AnimatedCrossFade(
           firstChild: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 CircularProgressIndicator(),
                 (controller.message.value != null)

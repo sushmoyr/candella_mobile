@@ -1,3 +1,4 @@
+import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/data/models/genre.dart';
 import 'package:candella/app/data/models/success.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
@@ -40,5 +41,9 @@ class ContentService extends GetConnect {
       print(e);
       return null;
     }
+  }
+
+  Future<Response<List<Content>>> loadFeaturedPosts() {
+    return Future.error('error');
   }
 }

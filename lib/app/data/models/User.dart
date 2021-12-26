@@ -1,11 +1,11 @@
-import 'package:candella/app/resources/constants/app_strings.dart';
-import 'package:candella/app/resources/constants/typedefs.dart';
-
 // To parse this JSON data, do
 //
 //     final user = userFromJson(jsonString);
 
 import 'dart:convert';
+
+import 'package:candella/app/resources/constants/app_strings.dart';
+import 'package:candella/app/resources/constants/typedefs.dart';
 
 class User {
   User({
@@ -38,8 +38,8 @@ class User {
   final List<Follower>? following;
   final List<Follower>? followers;
   final List<Follower>? savedPosts;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  final String? createdAt;
+  final String? updatedAt;
   final String? address;
   final String? bio;
   final String? penName;
@@ -71,12 +71,8 @@ class User {
             ? null
             : List<Follower>.from(
                 json["savedPosts"].map((x) => Follower.fromJson(x))),
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
+        createdAt: json["createdAt"],
+        updatedAt: json["updatedAt"],
         address: json["address"] ?? StringRes.notAdded,
         bio: json["bio"] ?? '',
         penName: json["pen_name"] ?? '',
@@ -102,8 +98,8 @@ class User {
         "savedPosts": savedPosts == null
             ? null
             : List<dynamic>.from(savedPosts!.map((x) => x.toJson())),
-        "createdAt": createdAt == null ? null : createdAt!.toIso8601String(),
-        "updatedAt": updatedAt == null ? null : updatedAt!.toIso8601String(),
+        "createdAt": createdAt == null ? null : createdAt!,
+        "updatedAt": updatedAt == null ? null : updatedAt!,
         "address": address,
         "bio": bio,
         "pen_name": penName,
