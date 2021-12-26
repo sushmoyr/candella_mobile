@@ -48,13 +48,27 @@ class AddChapterScreen extends GetView<AddChapterController> {
               ..._getCommonWidgets(),
               ...editor,
               Align(
-                  alignment: Alignment.centerRight,
-                  child: AppIconButton(
-                    mode: IconButtonMode.rounded,
-                    iconData: Ionicons.arrow_forward,
-                    iconColor: Theme.of(context).colorScheme.onPrimary,
-                    onTap: () {},
-                  ))
+                alignment: Alignment.centerRight,
+                child: AppIconButton(
+                  buttonSize: 48,
+                  mode: IconButtonMode.rounded,
+                  iconData: Ionicons.add,
+                  iconColor: Theme.of(context).colorScheme.onPrimary,
+                  onTap: _uploadImage,
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: AppIconButton(
+                  mode: IconButtonMode.rounded,
+                  iconData: Ionicons.arrow_forward,
+                  iconColor: Theme.of(context).colorScheme.onPrimary,
+                  onTap: () {},
+                ),
+              ),
             ],
           ),
         ),
@@ -86,7 +100,16 @@ class AddChapterScreen extends GetView<AddChapterController> {
     return [
       Expanded(
         child: Obx(
-          () => ListView(),
+          () => ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              ...controller.comicInputs.map(
+                (element) => Image.file(
+                  File(element),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     ];

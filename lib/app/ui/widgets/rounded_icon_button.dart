@@ -12,6 +12,7 @@ class AppIconButton extends StatelessWidget {
   final Color? iconColor;
   final double? elevation;
   final bool addBorder;
+  final double buttonSize;
 
   const AppIconButton({
     Key? key,
@@ -24,14 +25,21 @@ class AppIconButton extends StatelessWidget {
     this.elevation,
     this.iconColor,
     this.addBorder = false,
+    this.buttonSize = 54,
   }) : super(key: key);
 
   Widget _getIconButton(context) {
     return IconButton(
+      constraints: BoxConstraints(
+        maxWidth: buttonSize,
+        maxHeight: buttonSize,
+        minHeight: buttonSize,
+        minWidth: buttonSize,
+      ),
       onPressed: onTap,
+      iconSize: iconSize ?? 24.0,
       icon: Icon(
         iconData,
-        size: iconSize,
         color: iconColor,
       ),
     );

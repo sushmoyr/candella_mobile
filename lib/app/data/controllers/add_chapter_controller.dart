@@ -10,7 +10,7 @@ class AddChapterController extends GetxController {
   final RxList<ImageContentInputController> imageInputs = RxList();
   final RxList<String> comicInputs = RxList();
 
-  ChapterMode mode = ChapterMode.other;
+  ChapterMode mode = ChapterMode.comic;
 
   void addImagesPath(List<String> paths) {
     if (mode == ChapterMode.photography) {
