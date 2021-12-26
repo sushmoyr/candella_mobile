@@ -20,7 +20,15 @@ class TitleOnlyAppbar extends StatelessWidget {
             style: style ?? Theme.of(context).textTheme.headline4,
           ),
         ),
-        trailing ?? Container()
+        SizedBox(
+          width: 4,
+        ),
+        (trailing != null)
+            ? InkWell(
+                child: trailing,
+                onTap: onTap,
+              )
+            : Container()
       ],
     );
   }

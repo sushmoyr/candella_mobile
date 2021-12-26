@@ -119,7 +119,9 @@ class CreateContentScreen extends GetView<CreateContentController> {
           ),
           SizedBox(height: 8),
           TextFormField(
+            maxLength: 300,
             controller: controller.description,
+            textInputAction: TextInputAction.next,
             validator: validateRequiredField,
             decoration: InputDecoration(labelText: 'Description'),
           ),
@@ -248,12 +250,18 @@ class CreateContentScreen extends GetView<CreateContentController> {
         ));
         return;
       }
-      var result = await controller.postContent();
+      var resultMap = await controller.postContent();
+
+      var result = resultMap['result'];
 
       if (!result.status) {
         Get.to(ErrorScreen());
       } else {
-        Get.toNamed(Routes.addChapter);
+        var body = resultMap['body'];
+        Get.offNamed(Routes.addChapter, arguments: {
+          'contentId': body['_id'],
+          'category': body['category']
+        });
       }
     }
   }

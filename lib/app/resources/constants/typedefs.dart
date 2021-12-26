@@ -27,14 +27,31 @@ class Category {
 
   Category(this.id, this.name);
 
+  static Category story = Category("61afda37f402ce41f5d21bec", "Story");
+  static Category novel = Category("61afdb9031d1cebfa2b3e438", "Novel");
+  static Category poem = Category("61afdb9231d1cebfa2b3e43c", "Poem");
+  static Category comic = Category("61afdb9331d1cebfa2b3e441", "Comic");
+  static Category journal = Category("61afdb9331d1cebfa2b3e443", "Journal");
+  static Category photography =
+      Category("61afdb9331d1cebfa2b3e445", "Photography");
+
   static List<Category> categoryData = [
-    Category("61afda37f402ce41f5d21bec", "Story"),
-    Category("61afdb9031d1cebfa2b3e438", "Novel"),
-    Category("61afdb9231d1cebfa2b3e43c", "Poem"),
-    Category("61afdb9331d1cebfa2b3e441", "Comic"),
-    Category("61afdb9331d1cebfa2b3e443", "Journal"),
-    Category("61afdb9331d1cebfa2b3e445", "Photography"),
+    story,
+    novel,
+    poem,
+    comic,
+    journal,
+    photography
   ];
+}
+
+Category getCategoryById(String id) {
+  for (Category category in Category.categoryData) {
+    if (category.id == id) {
+      return category;
+    }
+  }
+  throw Exception('There is no category with id: $id');
 }
 
 /*

@@ -71,7 +71,7 @@ class CreateContentController extends GetxController {
     _resetAlternateField();
   }
 
-  Future<Result> postContent() async {
+  Future<Map<String, dynamic>> postContent() async {
     loading(true);
     final String title = this.title.value.text;
     final String description = this.description.value.text;
@@ -116,9 +116,13 @@ class CreateContentController extends GetxController {
 
     loading(false);
     if (status != null) {
-      return Result(true, 'Metadata Added');
+      printInfo(info: status.body.toString());
+      return {
+        "result": Result(true, 'Metadata Added'),
+        "body": status.body,
+      };
     } else {
-      return Result(false, 'Something Went Wrong');
+      return {"result": Result(false, 'Something Went Wrong')};
     }
   }
 

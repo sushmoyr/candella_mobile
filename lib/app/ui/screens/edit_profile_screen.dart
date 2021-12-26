@@ -55,6 +55,10 @@ class EditProfile extends GetView<ProfileScreenController> {
                                     StringRes.defaultCoverImage,
                                   );
                                 },
+                                errorBuilder: (context, object, stacktrace) {
+                                  return Image.asset(
+                                      StringRes.defaultCoverImage);
+                                },
                               ),
                       ), //Cover Image
                       SizedBox(

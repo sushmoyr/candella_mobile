@@ -1,3 +1,4 @@
+import 'package:candella/app/data/bindings/add_chapter_binding.dart';
 import 'package:candella/app/data/bindings/auth_binding.dart';
 import 'package:candella/app/data/bindings/create_content_binding.dart';
 import 'package:candella/app/data/bindings/extras_binding.dart';
@@ -76,6 +77,7 @@ class AppPages {
       page: () => AddChapterScreen(),
       transition: Transition.rightToLeft,
       curve: Curves.decelerate,
+      binding: AddChapterBinding(),
     )
   ];
 

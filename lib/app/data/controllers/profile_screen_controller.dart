@@ -91,7 +91,7 @@ class ProfileScreenController extends GetxController {
 
     Map<String, dynamic> requestBody = {
       "name": _name,
-      "penName": _penName,
+      "pen_name": _penName,
       "bio": _bio,
       "gender": _gender,
       "phone": _phone,
@@ -111,7 +111,7 @@ class ProfileScreenController extends GetxController {
 
     if (coverImage.value != null) {
       try {
-        var imageLink = await uploadPicture(profileImage.value);
+        var imageLink = await uploadPicture(coverImage.value);
         requestBody['coverImage'] = imageLink;
       } catch (e) {
         debugPrintStack(stackTrace: e as StackTrace);
