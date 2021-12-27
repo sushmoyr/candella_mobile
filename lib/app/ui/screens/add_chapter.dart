@@ -125,18 +125,11 @@ class AddChapterScreen extends GetView<AddChapterController> {
       ),
       Expanded(
         child: Obx(
-          () => ListView(
-            physics: BouncingScrollPhysics(),
-            children: [
-              ...controller.imageInputs.map(
-                (e) => _getPhotoInputWidget(e),
-              ),
-              OutlinedButton(
-                onPressed: _uploadImage,
-                child: Text('Add Image'),
-              ),
-            ],
-          ),
+          () => PhotoContentList(
+              links: controller.imageInputs,
+              onClose: (v) {
+                controller.imageInputs.removeWhere((element) => element == v);
+              }),
         ),
       ),
     ];
@@ -152,31 +145,6 @@ class AddChapterScreen extends GetView<AddChapterController> {
         picker.map((e) => e.path).toList(),
       );
     }
-  }
-
-  Widget _getPhotoInputWidget(ImageContentInputController e) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 4,
-        child: Column(
-          children: [
-            Image.file(File(e.imageUrl)),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextFormField(
-                controller: e.caption,
-                decoration: InputDecoration(
-                  labelText: 'Caption',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   List<Widget> _getCommonWidgets() {
@@ -329,6 +297,80 @@ class _ComicImageInputItem extends StatelessWidget {
           child: AppIconButton(
             onTap: () {
               onTap(imageUrl);
+            },
+            iconData: Ionicons.trash_bin_outline,
+            elevation: 8,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class PhotoContentList extends StatelessWidget {
+  const PhotoContentList({
+    Key? key,
+    required this.links,
+    required this.onClose,
+  }) : super(key: key);
+  final List<ImageContentInputController> links;
+  final Function(ImageContentInputController) onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      children: [
+        ...links.map(
+          (e) => PhotoContentCard(
+            controller: e,
+            onTap: onClose,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class PhotoContentCard extends StatelessWidget {
+  const PhotoContentCard(
+      {Key? key, required this.controller, required this.onTap})
+      : super(key: key);
+  final ImageContentInputController controller;
+  final Function(ImageContentInputController) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            elevation: 4,
+            child: Column(
+              children: [
+                Image.file(File(controller.imageUrl)),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextFormField(
+                    controller: controller.caption,
+                    decoration: InputDecoration(
+                      labelText: 'Caption',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: AppIconButton(
+            onTap: () {
+              onTap(controller);
             },
             iconData: Ionicons.trash_bin_outline,
             elevation: 8,
