@@ -1,3 +1,4 @@
+import 'package:candella/app/data/models/chapter.dart';
 import 'package:candella/app/data/models/result.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/services/chapter_service.dart';
@@ -15,6 +16,7 @@ class AddChapterController extends GetxController {
   final TextEditingController defaultChapterContent = TextEditingController();
   final RxList<ImageContentInputController> imageInputs = RxList();
   final RxList<String> comicInputs = RxList();
+  final TextEditingController photoChapterDescription = TextEditingController();
 
   ChapterMode mode = ChapterMode.comic;
 
@@ -40,8 +42,46 @@ class AddChapterController extends GetxController {
     }
   }
 
-  Result _addPhotoChapter(String catId, String contentId) {
-    return Result(false, 'message');
+  Future<Result> _addPhotoChapter(String catId, String contentId) async {
+    try {
+      List<PhotoContent> images = [];
+
+      for (ImageContentInputController imageController in imageInputs) {
+        String uploadedImageLink =
+            await _fileService.uploadImage(imageController.imageUrl, null);
+        images.add(
+          PhotoContent(
+              imageUrl: uploadedImageLink,
+              caption: imageController.caption.text),
+        );
+      }
+
+      PhotographyChapterBody pBody = PhotographyChapterBody(
+          images: images, description: photoChapterDescription.text);
+
+      Map<String, dynamic> requestBody = {
+        "category": catId,
+        "contentId": contentId,
+        "chapterName": chapterTitle.text,
+        "body": pBody.toJson(),
+      };
+
+      var response = await _chapterService.addChapter(requestBody);
+
+      if (response.hasError) {
+        return Future.error('error');
+      }
+
+      printInfo(info: response.body.toString());
+      var body = response.body;
+      return Result.withBody(
+        status: true,
+        message: body['message'],
+        body: body['body'],
+      );
+    } catch (e) {
+      return Result(false, '');
+    }
   }
 
   Future<Result> _addComicChapter(String catId, String contentId) async {
@@ -83,8 +123,31 @@ class AddChapterController extends GetxController {
     }
   }
 
-  Result _addOtherChapter(String catId, String contentId) {
-    return Result(false, 'message');
+  Future<Result> _addOtherChapter(String catId, String contentId) async {
+    try {
+      Map<String, dynamic> requestBody = {
+        "category": catId,
+        "contentId": contentId,
+        "chapterName": chapterTitle.text,
+        "body": defaultChapterContent.text,
+      };
+
+      var response = await _chapterService.addChapter(requestBody);
+
+      if (response.hasError) {
+        return Future.error('error');
+      }
+
+      printInfo(info: response.body.toString());
+      var body = response.body;
+      return Result.withBody(
+        status: true,
+        message: body['message'],
+        body: body['body'],
+      );
+    } catch (e) {
+      return Result(false, '');
+    }
   }
 }
 
