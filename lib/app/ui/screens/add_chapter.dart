@@ -103,15 +103,13 @@ class AddChapterScreen extends GetView<AddChapterController> {
     return [
       Expanded(
         child: Obx(
-          () => ListView(
-            physics: BouncingScrollPhysics(),
-            children: [
-              ...controller.comicInputs.map(
-                (element) => Image.file(
-                  File(element),
-                ),
-              ),
-            ],
+          () => ComicImageInput(
+            links: controller.comicInputs,
+            onClose: (link) {
+              print('clicked $link');
+              controller.comicInputs.removeWhere((element) => element == link);
+              printInfo(info: controller.comicInputs.length.toString());
+            },
           ),
         ),
       ),
@@ -291,4 +289,52 @@ class DefaultChapterBody implements ChapterBody {
       DefaultChapterBody();
 
   DefaultChapterBody();
+}
+
+class ComicImageInput extends StatelessWidget {
+  final List<String> links;
+  final Function(String) onClose;
+
+  const ComicImageInput({Key? key, required this.links, required this.onClose})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      children: [
+        ...links.map(
+          (element) => _ComicImageInputItem(imageUrl: element, onTap: onClose),
+        ),
+      ],
+    );
+  }
+}
+
+class _ComicImageInputItem extends StatelessWidget {
+  final String imageUrl;
+  final Function(String) onTap;
+
+  const _ComicImageInputItem(
+      {Key? key, required this.imageUrl, required this.onTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Image.file(File(imageUrl)),
+        Align(
+          alignment: Alignment.topRight,
+          child: AppIconButton(
+            onTap: () {
+              onTap(imageUrl);
+            },
+            iconData: Ionicons.trash_bin_outline,
+            elevation: 8,
+          ),
+        ),
+      ],
+    );
+  }
 }
