@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:candella/app/data/controllers/add_chapter_controller.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
+import 'package:candella/app/ui/screens/error_page.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:candella/app/ui/widgets/title_only_appbar.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,8 @@ import 'package:ionicons/ionicons.dart';
 
 class AddChapterScreen extends GetView<AddChapterController> {
   AddChapterScreen({Key? key}) : super(key: key);
-  final contentCategory = Get.arguments['category'];
-  final contentId = Get.arguments['contentId'];
+  final String contentCategory = Get.arguments['category'];
+  final String contentId = Get.arguments['contentId'];
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,8 @@ class AddChapterScreen extends GetView<AddChapterController> {
       editor = _getDefaultChapter();
       controller.mode = ChapterMode.other;
     }
+
+    printInfo(info: controller.mode.name);
 
     return Scaffold(
       body: SafeArea(
@@ -66,7 +69,7 @@ class AddChapterScreen extends GetView<AddChapterController> {
                   mode: IconButtonMode.rounded,
                   iconData: Ionicons.arrow_forward,
                   iconColor: Theme.of(context).colorScheme.onPrimary,
-                  onTap: () {},
+                  onTap: _uploadChapter,
                 ),
               ),
             ],
@@ -187,6 +190,16 @@ class AddChapterScreen extends GetView<AddChapterController> {
         ),
       ),
     ];
+  }
+
+  void _uploadChapter() async {
+    var result = await controller.addChapter(contentCategory, contentId);
+
+    if (result.status) {
+      //Added chapter. Take to post screen
+    } else {
+      Get.to(ErrorScreen());
+    }
   }
 }
 

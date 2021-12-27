@@ -8,4 +8,6 @@ class EndPoints {
   static String singleImage = '/files/single';
   static String authUpdate = '/update';
   static String userUpdate = '/u/update';
+
+  static String addChapter = '/c/chapter';
 }
