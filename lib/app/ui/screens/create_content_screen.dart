@@ -153,10 +153,6 @@ class CreateContentScreen extends GetView<CreateContentController> {
               },
             ),
           ),
-          /*
-          TODO: Add More Content {Add alternate names, tags}
-          TODO: Add Image Service
-           */
           ExpansionTile(
             tilePadding: EdgeInsets.zero,
             childrenPadding: EdgeInsets.all(8),
@@ -229,9 +225,17 @@ class CreateContentScreen extends GetView<CreateContentController> {
   }
 
   void _pickImage() async {
+    CropAspectRatio ratio;
+    if (controller.selectedCategory.value == Category.photography ||
+        controller.selectedCategory.value == Category.journal) {
+      ratio = CropAspectRatio(3, 2);
+    } else {
+      ratio = CropAspectRatio(2, 3);
+    }
+
     var picked = await ImagesPicker.pick(
       cropOpt: CropOption(
-        aspectRatio: CropAspectRatio(2, 3),
+        aspectRatio: ratio,
       ),
     );
     if (picked != null) {

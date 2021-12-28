@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:candella/app/data/controllers/add_chapter_controller.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/ui/screens/error_page.dart';
+import 'package:candella/app/ui/widgets/loader.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:candella/app/ui/widgets/title_only_appbar.dart';
 import 'package:flutter/material.dart';
@@ -35,46 +36,50 @@ class AddChapterScreen extends GetView<AddChapterController> {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              TitleOnlyAppbar(
-                title: 'Add content to your ${category.name}',
-                trailing: Icon(Ionicons.close_outline),
-                onTap: () {
-                  Get.back();
-                },
-              ),
-              ..._getCommonWidgets(),
-              ...editor,
-              Align(
-                alignment: Alignment.centerRight,
-                child: AppIconButton(
-                  buttonSize: 48,
-                  mode: IconButtonMode.rounded,
-                  iconData: Ionicons.add,
-                  iconColor: Theme.of(context).colorScheme.onPrimary,
-                  onTap: _uploadImage,
+          child: Obx(
+        () => Loader(
+          isLoading: controller.loading.value,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                TitleOnlyAppbar(
+                  title: 'Add content to your ${category.name}',
+                  trailing: Icon(Ionicons.close_outline),
+                  onTap: () {
+                    Get.back();
+                  },
                 ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: AppIconButton(
-                  mode: IconButtonMode.rounded,
-                  iconData: Ionicons.arrow_forward,
-                  iconColor: Theme.of(context).colorScheme.onPrimary,
-                  onTap: _uploadChapter,
+                ..._getCommonWidgets(),
+                ...editor,
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: AppIconButton(
+                    buttonSize: 48,
+                    mode: IconButtonMode.rounded,
+                    iconData: Ionicons.add,
+                    iconColor: Theme.of(context).colorScheme.onPrimary,
+                    onTap: _uploadImage,
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 8,
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: AppIconButton(
+                    mode: IconButtonMode.rounded,
+                    iconData: Ionicons.arrow_forward,
+                    iconColor: Theme.of(context).colorScheme.onPrimary,
+                    onTap: _uploadChapter,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+      )),
     );
   }
 
@@ -84,6 +89,7 @@ class AddChapterScreen extends GetView<AddChapterController> {
       Expanded(
         child: TextFormField(
           scrollPhysics: BouncingScrollPhysics(),
+          controller: controller.defaultChapterContent,
           expands: true,
           minLines: null,
           maxLines: null,
@@ -124,13 +130,11 @@ class AddChapterScreen extends GetView<AddChapterController> {
         ),
       ),
       Expanded(
-        child: Obx(
-          () => PhotoContentList(
-              links: controller.imageInputs,
-              onClose: (v) {
-                controller.imageInputs.removeWhere((element) => element == v);
-              }),
-        ),
+        child: PhotoContentList(
+            links: controller.imageInputs,
+            onClose: (v) {
+              controller.imageInputs.removeWhere((element) => element == v);
+            }),
       ),
     ];
   }
@@ -154,15 +158,22 @@ class AddChapterScreen extends GetView<AddChapterController> {
         decoration: InputDecoration(
           labelText: 'Chapter Title',
         ),
+        validator: (v) {
+          if (v == null || v.isEmpty) {
+            return '*Required Field';
+          }
+          return null;
+        },
       ),
     ];
   }
 
   void _uploadChapter() async {
+    controller.loading(true);
     var result = await controller.addChapter(contentCategory, contentId);
-
+    printInfo(info: result.message);
+    controller.loading(false);
     if (result.status) {
-      //Added chapter. Take to post screen
     } else {
       Get.to(ErrorScreen());
     }
@@ -228,16 +239,18 @@ class PhotoContentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: BouncingScrollPhysics(),
-      children: [
-        ...links.map(
-          (e) => PhotoContentCard(
-            controller: e,
-            onTap: onClose,
+    return Obx(
+      () => ListView(
+        physics: BouncingScrollPhysics(),
+        children: [
+          ...links.map(
+            (e) => PhotoContentCard(
+              controller: e,
+              onTap: onClose,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -19,6 +19,7 @@ class AddChapterController extends GetxController {
   final TextEditingController photoChapterDescription = TextEditingController();
 
   ChapterMode mode = ChapterMode.comic;
+  final RxBool loading = RxBool(false);
 
   void addImagesPath(List<String> paths) {
     if (mode == ChapterMode.photography) {
@@ -33,6 +34,7 @@ class AddChapterController extends GetxController {
   }
 
   Future<Result> addChapter(String catId, String contentId) async {
+    loading(true);
     if (mode == ChapterMode.photography) {
       return _addPhotoChapter(catId, contentId);
     } else if (mode == ChapterMode.comic) {
@@ -67,7 +69,7 @@ class AddChapterController extends GetxController {
       };
 
       var response = await _chapterService.addChapter(requestBody);
-
+      loading(false);
       if (response.hasError) {
         return Future.error('error');
       }
@@ -80,6 +82,7 @@ class AddChapterController extends GetxController {
         body: body['body'],
       );
     } catch (e) {
+      loading(false);
       return Result(false, '');
     }
   }
@@ -106,7 +109,7 @@ class AddChapterController extends GetxController {
       };
 
       var response = await _chapterService.addChapter(requestBody);
-
+      loading(false);
       if (response.hasError) {
         return Future.error('error');
       }
@@ -119,6 +122,7 @@ class AddChapterController extends GetxController {
         body: body['body'],
       );
     } catch (e) {
+      loading(false);
       return Result(false, '');
     }
   }
@@ -131,21 +135,23 @@ class AddChapterController extends GetxController {
         "chapterName": chapterTitle.text,
         "body": defaultChapterContent.text,
       };
-
+      printInfo(info: requestBody.toString());
       var response = await _chapterService.addChapter(requestBody);
 
       if (response.hasError) {
-        return Future.error('error');
+        return Result(false, response.statusText.toString());
       }
 
       printInfo(info: response.body.toString());
       var body = response.body;
+      loading(false);
       return Result.withBody(
         status: true,
         message: body['message'],
         body: body['body'],
       );
     } catch (e) {
+      loading(false);
       return Result(false, '');
     }
   }
