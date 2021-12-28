@@ -129,17 +129,29 @@ class FeatureSlider extends StatelessWidget {
         ),
         items: data.map((element) {
           return Builder(builder: (context) {
-            return FeaturedCard(content: element);
+            return FeaturedCard(
+              content: element,
+              onItemClicked: _handleItemClick,
+            );
           });
         }).toList(),
       ),
     );
   }
+
+  void _handleItemClick(FeaturedContent content) {
+    printInfo(info: content.toRawJson());
+  }
 }
 
 class FeaturedCard extends StatelessWidget {
-  const FeaturedCard({Key? key, required this.content}) : super(key: key);
+  const FeaturedCard({
+    Key? key,
+    required this.content,
+    required this.onItemClicked,
+  }) : super(key: key);
   final FeaturedContent content;
+  final Function(FeaturedContent) onItemClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -152,6 +164,7 @@ class FeaturedCard extends StatelessWidget {
         child: InkWell(
           onTap: () {
             printInfo(info: 'clicked');
+            onItemClicked(content);
           },
           child: Stack(
             alignment: Alignment.bottomLeft,
