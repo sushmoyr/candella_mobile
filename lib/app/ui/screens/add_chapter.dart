@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:candella/app/data/controllers/add_chapter_controller.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
+import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/ui/screens/error_page.dart';
 import 'package:candella/app/ui/widgets/loader.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
@@ -107,15 +108,12 @@ class AddChapterScreen extends GetView<AddChapterController> {
   List<Widget> _getComicChapter() {
     return [
       Expanded(
-        child: Obx(
-          () => ComicImageInput(
-            links: controller.comicInputs,
-            onClose: (link) {
-              print('clicked $link');
-              controller.comicInputs.removeWhere((element) => element == link);
-              printInfo(info: controller.comicInputs.length.toString());
-            },
-          ),
+        child: ComicImageInput(
+          links: controller.comicInputs,
+          onClose: (link) {
+            controller.comicInputs.removeWhere((element) => element == link);
+            printInfo(info: controller.comicInputs.length.toString());
+          },
         ),
       ),
     ];
@@ -174,8 +172,9 @@ class AddChapterScreen extends GetView<AddChapterController> {
     printInfo(info: result.message);
     controller.loading(false);
     if (result.status) {
+      Get.offAllNamed(Routes.main);
     } else {
-      Get.to(ErrorScreen());
+      Get.to(() => ErrorScreen());
     }
   }
 }
@@ -189,14 +188,15 @@ class ComicImageInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: BouncingScrollPhysics(),
-      children: [
-        ...links.map(
-          (element) => _ComicImageInputItem(imageUrl: element, onTap: onClose),
-        ),
-      ],
-    );
+    return Obx(() => ListView(
+          physics: BouncingScrollPhysics(),
+          children: [
+            ...links.map(
+              (element) =>
+                  _ComicImageInputItem(imageUrl: element, onTap: onClose),
+            ),
+          ],
+        ));
   }
 }
 

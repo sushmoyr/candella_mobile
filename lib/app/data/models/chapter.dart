@@ -2,10 +2,14 @@ import 'dart:convert';
 
 import 'package:candella/app/resources/constants/typedefs.dart';
 
-abstract class ChapterBody {}
+import 'author.dart';
+
+abstract class ChapterBody {
+  Map<String, dynamic> toJson();
+}
 
 class Chapter {
-  final String author;
+  final Author author;
   final String category;
   final String chapterName;
   final String contentId;
@@ -20,10 +24,12 @@ class Chapter {
 
   factory Chapter.fromJson(Map<String, dynamic> json) {
     ChapterBody body;
-    Category category = getCategoryById(json['category']);
+    Category category = Category.fromJson(json['category']);
 
     if (category == Category.photography) {
       body = PhotographyChapterBody.fromJson(json['body']);
+    } else if (category == Category.comic) {
+      body = ComicChapterBody.fromJson(json['body']);
     } else {
       body = DefaultChapterBody.fromJson(json['body']);
     }
@@ -35,6 +41,16 @@ class Chapter {
       contentId: json['contentId'],
       body: body,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "author": author.toJson(),
+      "category": category,
+      "chapterName": chapterName,
+      "contentId": contentId,
+      "body": body.toJson(),
+    };
   }
 }
 
@@ -55,6 +71,18 @@ class PhotoContent {
       };
 }
 
+class ComicChapterBody implements ChapterBody {
+  final List<String> pages;
+
+  const ComicChapterBody({required this.pages});
+
+  factory ComicChapterBody.fromJson(Map<String, dynamic> json) =>
+      ComicChapterBody(pages: json['pages']);
+
+  @override
+  Map<String, dynamic> toJson() => {"pages": pages};
+}
+
 class PhotographyChapterBody implements ChapterBody {
   final List<PhotoContent> images;
   final String description;
@@ -73,21 +101,27 @@ class PhotographyChapterBody implements ChapterBody {
   factory PhotographyChapterBody.fromRawJson(String str) =>
       PhotographyChapterBody.fromJson(jsonDecode(str));
 
+  @override
   Map<String, dynamic> toJson() => {
-        "description": description,
-        "images": List<dynamic>.from(
-          images.map(
+    "description": description,
+    "images": List<dynamic>.from(
+      images.map(
             (e) => e.toJson(),
-          ),
-        )
-      };
+      ),
+    )
+  };
 
   String toRawJson() => jsonEncode(toJson());
 }
 
 class DefaultChapterBody implements ChapterBody {
-  factory DefaultChapterBody.fromJson(Map<String, dynamic> json) =>
-      DefaultChapterBody();
+  final String data;
 
-  DefaultChapterBody();
+  factory DefaultChapterBody.fromJson(Map<String, dynamic> json) =>
+      DefaultChapterBody(json['data']);
+
+  DefaultChapterBody(this.data);
+
+  @override
+  Map<String, dynamic> toJson() => {"data": data};
 }

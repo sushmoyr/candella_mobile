@@ -105,7 +105,7 @@ class AddChapterController extends GetxController {
         "category": catId,
         "contentId": contentId,
         "chapterName": chapterTitle.text,
-        "body": images,
+        "body": ComicChapterBody(pages: images).toJson(),
       };
 
       var response = await _chapterService.addChapter(requestBody);
@@ -133,7 +133,7 @@ class AddChapterController extends GetxController {
         "category": catId,
         "contentId": contentId,
         "chapterName": chapterTitle.text,
-        "body": defaultChapterContent.text,
+        "body": DefaultChapterBody(defaultChapterContent.text).toJson(),
       };
       printInfo(info: requestBody.toString());
       var response = await _chapterService.addChapter(requestBody);

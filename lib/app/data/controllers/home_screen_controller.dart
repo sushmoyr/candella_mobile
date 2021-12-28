@@ -18,10 +18,17 @@ class HomeController extends GetxController {
 
     user.value = await _loadCurrentUser();
 
+    _loadFeaturedPosts();
+
     super.onInit();
   }
 
-  void loadFeaturedPosts() {}
+  void _loadFeaturedPosts() async {
+    var featuredPosts = await _contentService.loadFeaturedPosts();
+
+    var data = featuredPosts.body;
+    printInfo(info: data.toString());
+  }
 
   @override
   void refresh() async {

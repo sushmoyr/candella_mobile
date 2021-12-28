@@ -25,9 +25,14 @@ class Category {
   final String id;
   final String name;
 
-  Category(this.id, this.name);
+  const Category(this.id, this.name);
 
-  static Category story = Category("61afda37f402ce41f5d21bec", "Story");
+  factory Category.fromJson(Map<String, dynamic> json) =>
+      Category(json['_id'], json['name']);
+
+  Map<String, dynamic> toJson() => {"_id": id, "name": name};
+
+  static const Category story = Category("61afda37f402ce41f5d21bec", "Story");
   static Category novel = Category("61afdb9031d1cebfa2b3e438", "Novel");
   static Category poem = Category("61afdb9231d1cebfa2b3e43c", "Poem");
   static Category comic = Category("61afdb9331d1cebfa2b3e441", "Comic");

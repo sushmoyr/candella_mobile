@@ -5,6 +5,7 @@ class EndPoints {
   static String info = '/u/info';
   static String genres = 'types/genres';
   static String content = '/c';
+  static String featured = '/c/featured/all';
   static String singleImage = '/files/single';
   static String authUpdate = '/update';
   static String userUpdate = '/u/update';

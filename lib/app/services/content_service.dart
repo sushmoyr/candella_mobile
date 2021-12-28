@@ -1,4 +1,4 @@
-import 'package:candella/app/data/models/content.dart';
+import 'package:candella/app/data/models/FeaturedContent/featured_content_model.dart';
 import 'package:candella/app/data/models/genre.dart';
 import 'package:candella/app/data/models/success.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
@@ -43,7 +43,10 @@ class ContentService extends GetConnect {
     }
   }
 
-  Future<Response<List<Content>>> loadFeaturedPosts() {
-    return Future.error('error');
+  Future<Response<List<FeaturedContent>>> loadFeaturedPosts() {
+    return get(
+      EndPoints.featured,
+      decoder: (json) => FeaturedContent.fromList(json),
+    );
   }
 }
