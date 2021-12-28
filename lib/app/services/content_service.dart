@@ -38,7 +38,6 @@ class ContentService extends GetConnect {
       }
       return value.body;
     } catch (e) {
-      print(e);
       return null;
     }
   }

@@ -12,7 +12,7 @@ class HomeController extends GetxController {
   late Rx<User> user = User().obs;
   final UserService _userService = Get.find();
   final ContentService _contentService = Get.find();
-  final RxList featuredContents = RxList([]);
+  final RxList<FeaturedContent> featuredContents = RxList(<FeaturedContent>[]);
 
   @override
   void onInit() async {
