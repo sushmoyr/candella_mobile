@@ -103,13 +103,13 @@ class PhotographyChapterBody implements ChapterBody {
 
   @override
   Map<String, dynamic> toJson() => {
-    "description": description,
-    "images": List<dynamic>.from(
-      images.map(
+        "description": description,
+        "images": List<dynamic>.from(
+          images.map(
             (e) => e.toJson(),
-      ),
-    )
-  };
+          ),
+        )
+      };
 
   String toRawJson() => jsonEncode(toJson());
 }

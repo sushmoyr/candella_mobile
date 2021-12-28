@@ -92,7 +92,8 @@ class HomeScreen extends GetView<HomeController> {
               Text(
                 'Featured',
                 style: Theme.of(context).textTheme.headline5,
-              )
+              ),
+              FeatureCard(),
             ],
           ),
         ),

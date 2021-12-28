@@ -1,3 +1,4 @@
+import 'package:candella/app/data/models/FeaturedContent/featured_content_model.dart';
 import 'package:candella/app/data/models/User.dart';
 import 'package:candella/app/services/UserService.dart';
 import 'package:candella/app/services/content_service.dart';
@@ -11,6 +12,7 @@ class HomeController extends GetxController {
   late Rx<User> user = User().obs;
   final UserService _userService = Get.find();
   final ContentService _contentService = Get.find();
+  final RxList featuredContents = RxList([]);
 
   @override
   void onInit() async {
@@ -18,16 +20,27 @@ class HomeController extends GetxController {
 
     user.value = await _loadCurrentUser();
 
-    _loadFeaturedPosts();
+    var featuredData = await _loadFeaturedPosts();
+    if (featuredData != null) {
+      featuredContents(featuredData);
+    }
 
     super.onInit();
   }
 
-  void _loadFeaturedPosts() async {
-    var featuredPosts = await _contentService.loadFeaturedPosts();
+  Future<List<FeaturedContent>?> _loadFeaturedPosts() async {
+    try {
+      var featuredPosts = await _contentService.loadFeaturedPosts();
 
-    var data = featuredPosts.body;
-    printInfo(info: data.toString());
+      if (!featuredPosts.hasError) {
+        var data = featuredPosts.body;
+        return data;
+      }
+      return null;
+    } catch (e) {
+      printError(info: e.toString());
+      return null;
+    }
   }
 
   @override
