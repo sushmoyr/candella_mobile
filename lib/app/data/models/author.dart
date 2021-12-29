@@ -35,8 +35,7 @@ class Author {
         penName: json['pen_name'],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
         "email": email,
