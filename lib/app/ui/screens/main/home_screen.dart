@@ -123,11 +123,13 @@ class HomeScreen extends GetView<HomeController> {
                         return LandscapeContentItemCard(
                           content: data,
                           onClick: () {},
+                          elevation: 4,
                         );
                       } else {
                         return DefaultContentItemCard(
                           content: data,
                           onItemClick: () {},
+                          elevation: 4,
                         );
                       }
                     },
