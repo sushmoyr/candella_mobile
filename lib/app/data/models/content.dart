@@ -67,8 +67,7 @@ class Content {
         updatedAt: json["updatedAt"],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "_id": id,
         "author": author.toJson(),
         "title": title,
