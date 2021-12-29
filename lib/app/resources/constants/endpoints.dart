@@ -1,5 +1,7 @@
 class EndPoints {
-  static String baseUrl = 'https://candella.herokuapp.com/api/v2';
+  static String host = 'http://192.168.0.105:8080';
+  static String prefix = '/api/v2';
+  static String baseUrl = host + prefix;
   static String login = '/login';
   static String create = '/create';
   static String info = '/u/info';

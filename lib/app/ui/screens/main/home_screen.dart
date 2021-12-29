@@ -1,6 +1,7 @@
 import 'package:candella/app/data/controllers/home_screen_controller.dart';
 import 'package:candella/app/data/models/FeaturedContent/featured_content_model.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
+import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/ui/widgets/rounded_icon_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -64,8 +65,8 @@ class HomeScreen extends GetView<HomeController> {
                         onTap: () {
                           Get.toNamed(Routes.profile);
                         },
-                        child: Obx(() =>
-                            Image.network(controller.user.value.profileImage)),
+                        child: Obx(() => Image.network(EndPoints.host +
+                            controller.user.value.profileImage)),
                       ),
                     ),
                   ),
@@ -172,7 +173,7 @@ class FeaturedCard extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Image.network(
-                  content.coverImage,
+                  EndPoints.host + content.coverImage,
                   fit: BoxFit.cover,
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:candella/app/data/controllers/extras_controller.dart';
 import 'package:candella/app/data/models/User.dart';
+import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/services/prefs.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ class ExtrasScreen extends GetView<ExtrasController> {
   @override
   Widget build(BuildContext context) {
     final rawUser = Get.arguments['user'];
-    print(rawUser);
     if (rawUser == null) {
       return Container();
     }
@@ -27,7 +27,7 @@ class ExtrasScreen extends GetView<ExtrasController> {
               children: [
                 ClipOval(
                   child: CircleAvatar(
-                    child: Image.network(user.profileImage),
+                    child: Image.network(EndPoints.host + user.profileImage),
                     radius: 64,
                   ),
                 ),

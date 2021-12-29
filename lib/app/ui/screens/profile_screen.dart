@@ -1,5 +1,6 @@
 import 'package:candella/app/data/controllers/profile_screen_controller.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
+import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/ui/widgets/expandable_card.dart';
@@ -24,7 +25,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
               Column(
                 children: [
                   Image.network(
-                    controller.user.value.coverImage,
+                    EndPoints.host + controller.user.value.coverImage,
                     loadingBuilder: (context, widget, loading) {
                       if (loading == null) {
                         return widget;
@@ -40,7 +41,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
               ClipOval(
                 child: CircleAvatar(
                   child: Image.network(
-                    controller.user.value.profileImage,
+                    EndPoints.host + controller.user.value.profileImage,
                     loadingBuilder: (context, child, loading) {
                       if (loading == null) {
                         return child;
