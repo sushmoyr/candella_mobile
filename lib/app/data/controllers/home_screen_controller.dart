@@ -1,5 +1,6 @@
 import 'package:candella/app/data/models/FeaturedContent/featured_content_model.dart';
 import 'package:candella/app/data/models/User.dart';
+import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/services/UserService.dart';
 import 'package:candella/app/services/content_service.dart';
 import 'package:candella/app/services/prefs.dart';
@@ -13,6 +14,7 @@ class HomeController extends GetxController {
   final UserService _userService = Get.find();
   final ContentService _contentService = Get.find();
   final RxList<FeaturedContent> featuredContents = RxList(<FeaturedContent>[]);
+  final RxList<Content> latestContents = RxList(<Content>[]);
 
   @override
   void onInit() async {
@@ -25,6 +27,12 @@ class HomeController extends GetxController {
       featuredContents(featuredData);
     }
 
+    var latestData = await _loadLatestPosts();
+    if (latestData != null) {
+      printInfo(info: latestData.toString());
+      latestContents(latestData);
+    }
+
     super.onInit();
   }
 
@@ -34,6 +42,22 @@ class HomeController extends GetxController {
 
       if (!featuredPosts.hasError) {
         var data = featuredPosts.body;
+        return data;
+      }
+      return null;
+    } catch (e) {
+      printError(info: e.toString());
+      return null;
+    }
+  }
+
+  Future<List<Content>?> _loadLatestPosts() async {
+    try {
+      var latestPosts = await _contentService.loadLatestPosts();
+
+      if (!latestPosts.hasError) {
+        var data = latestPosts.body;
+        printInfo(info: data.toString());
         return data;
       }
       return null;

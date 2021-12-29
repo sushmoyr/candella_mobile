@@ -84,6 +84,12 @@ class Content {
         "createdAt": createdAt,
         "updatedAt": updatedAt,
       };
+
+  static fromList(json) => List<Content>.from(
+        json.map(
+          (x) => Content.fromJson(x),
+        ),
+      );
 }
 
 class ChapterX {

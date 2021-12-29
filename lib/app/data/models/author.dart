@@ -8,6 +8,7 @@ class Author {
     this.profileImage = '',
     this.coverImage = '',
     this.authorId = '',
+    this.penName = '',
   });
 
   final String id;
@@ -16,6 +17,7 @@ class Author {
   final String profileImage;
   final String coverImage;
   final String authorId;
+  final String penName;
 
   factory Author.fromRawJson(String str) => Author.fromJson(json.decode(str));
 
@@ -30,14 +32,17 @@ class Author {
         profileImage: json["profileImage"],
         coverImage: json["coverImage"],
         authorId: json["id"],
+        penName: json['pen_name'],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "_id": id,
         "name": name,
         "email": email,
         "profileImage": profileImage,
         "coverImage": coverImage,
         "id": authorId,
+        "pen_name": penName,
       };
 }
