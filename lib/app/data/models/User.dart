@@ -49,7 +49,7 @@ class User {
   String toRawJson() => json.encode(toJson());
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["_id"],
+        id: json["_id"],
         name: json["name"] ?? '',
         email: json["email"],
         profileImage: json["profileImage"] ?? StringRes.defaultProfileUrl,
@@ -73,8 +73,7 @@ class User {
         birthdate: json["birthdate"] ?? '1/1/1901',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
         "email": email,
