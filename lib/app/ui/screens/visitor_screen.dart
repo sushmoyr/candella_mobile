@@ -83,10 +83,8 @@ class VisitorScreen extends GetView<VisitorController> {
                 ),
               ),
               Expanded(
-                child: ValueCard(
-                  valueWidget: Icon(Ionicons.person_add_outline),
-                  name: "Follow",
-                ),
+                child: Obx(() =>
+                    FollowCard(isFollowing: controller.isFollowedByMe.value)),
               ),
             ],
           ),
@@ -177,5 +175,34 @@ class VisitorScreen extends GetView<VisitorController> {
         ),
       ),
     );
+  }
+}
+
+class FollowCard extends StatelessWidget {
+  final bool isFollowing;
+  final VoidCallback? onClick;
+
+  const FollowCard({
+    Key? key,
+    required this.isFollowing,
+    this.onClick,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (isFollowing)
+        ? ValueCard(
+            onClick: onClick,
+            valueWidget: Icon(
+              Ionicons.person_remove_outline,
+              color: Theme.of(context).primaryColor,
+            ),
+            name: "Unfollow",
+          )
+        : ValueCard(
+            onClick: onClick,
+            valueWidget: Icon(Ionicons.person_add_outline),
+            name: "Follow",
+          );
   }
 }
