@@ -1,6 +1,7 @@
 import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/data/models/genre.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
+import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
@@ -60,6 +61,12 @@ class DefaultContentItemCard extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                     onTap: () {
                       printInfo(info: content.author.name);
+                      Get.toNamed(
+                        Routes.visitProfile,
+                        parameters: {
+                          'id': content.author.id,
+                        },
+                      );
                     },
                     leading: ClipOval(
                       child: CircleAvatar(

@@ -1,18 +1,16 @@
-import 'package:candella/app/data/controllers/profile_screen_controller.dart';
+import 'package:candella/app/data/controllers/visitor_controller.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
-import 'package:candella/app/resources/constants/typedefs.dart';
-import 'package:candella/app/resources/routes/app_routes.dart';
+import 'package:candella/app/ui/screens/error_page.dart';
 import 'package:candella/app/ui/widgets/expandable_card.dart';
 import 'package:candella/app/ui/widgets/loader.dart';
 import 'package:candella/app/ui/widgets/value_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 
-class ProfileScreen extends GetView<ProfileScreenController> {
-  const ProfileScreen({Key? key}) : super(key: key);
+class VisitorScreen extends GetView<VisitorController> {
+  const VisitorScreen({Key? key}) : super(key: key);
 
   Widget _getBodyTree(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
@@ -85,16 +83,10 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                 ),
               ),
               Expanded(
-                child: (controller.profileType == ProfileType.self)
-                    ? ValueCard(
-                        valueWidget: Icon(Ionicons.pencil_outline),
-                        name: 'Edit Profile',
-                        onClick: _handleEditButton,
-                      )
-                    : ValueCard(
-                        valueWidget: Icon(Ionicons.person_add_outline),
-                        name: "Follow",
-                      ),
+                child: ValueCard(
+                  valueWidget: Icon(Ionicons.person_add_outline),
+                  name: "Follow",
+                ),
               ),
             ],
           ),
@@ -133,18 +125,18 @@ class ProfileScreen extends GetView<ProfileScreenController> {
           ListTile(
             leading: Icon(Ionicons.mail_outline),
             title: Text('Email'),
-            subtitle: Text(controller.user.value.email!),
+            subtitle: Text(controller.user.value.email ?? ''),
           ),
           ListTile(
             leading: Icon(Ionicons.phone_portrait_outline),
             title: Text('Phone'),
-            subtitle: Text(controller.user.value.phone!),
+            subtitle: Text(controller.user.value.phone ?? ''),
             style: ListTileStyle.list,
           ),
           ListTile(
             leading: Icon(Ionicons.location_outline),
             title: Text('Address'),
-            subtitle: Text(controller.user.value.address!),
+            subtitle: Text(controller.user.value.address ?? ''),
             style: ListTileStyle.list,
           ),
         ],
@@ -154,7 +146,22 @@ class ProfileScreen extends GetView<ProfileScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.loadUser(Get.parameters['id']);
+    if (Get.parameters['id'] != null) {
+      controller.loadUser(Get.parameters['id']!).then((value) {
+        if (!value.status) {
+          printInfo(info: 'jump error');
+          Get.off(() => ErrorScreen());
+        }
+      }).onError((error, stackTrace) {
+        printInfo(info: 'To error');
+        Get.off(() => ErrorScreen());
+        throw error!;
+      });
+    } else {
+      printInfo(info: 'why error');
+      Get.off(() => ErrorScreen());
+    }
+
     return Scaffold(
       backgroundColor: Color(0xFFEFEFEF),
       extendBodyBehindAppBar: true,
@@ -162,7 +169,6 @@ class ProfileScreen extends GetView<ProfileScreenController> {
         elevation: 0,
         foregroundColor: Theme.of(context).colorScheme.primary,
         backgroundColor: Colors.black.withAlpha(0),
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Obx(
         () => Loader(
@@ -171,10 +177,5 @@ class ProfileScreen extends GetView<ProfileScreenController> {
         ),
       ),
     );
-  }
-
-  void _handleEditButton() {
-    printInfo(info: 'edit button clicked');
-    Get.toNamed(Routes.editProfile);
   }
 }

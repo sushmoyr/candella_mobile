@@ -15,8 +15,8 @@ class User {
     this.profileImage = StringRes.defaultProfileUrl,
     this.coverImage = StringRes.defaultCoverImage,
     this.gender = Gender.notSpecified,
-    this.following,
-    this.followers,
+    this.following = const <String>[],
+    this.followers = const <String>[],
     this.savedPosts,
     this.createdAt,
     this.updatedAt,
@@ -25,8 +25,6 @@ class User {
     this.penName,
     this.phone,
     this.birthdate = '1/1/1901',
-    this.totalFollowers = 0,
-    this.totalFollowing = 0,
   });
 
   final String? id;
@@ -35,9 +33,9 @@ class User {
   final String profileImage;
   final String coverImage;
   final String gender;
-  final List<Follower>? following;
-  final List<Follower>? followers;
-  final List<Follower>? savedPosts;
+  final List<String> following;
+  final List<String> followers;
+  final List<String>? savedPosts;
   final String? createdAt;
   final String? updatedAt;
   final String? address;
@@ -45,32 +43,27 @@ class User {
   final String? penName;
   final String? phone;
   final String birthdate;
-  final int totalFollowers;
-  final int totalFollowing;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["_id"],
-        name: json["name"],
+    id: json["_id"],
+        name: json["name"] ?? '',
         email: json["email"],
         profileImage: json["profileImage"] ?? StringRes.defaultProfileUrl,
         coverImage: json["coverImage"] ?? StringRes.defaultCoverImage,
         gender: json["gender"] ?? Gender.notSpecified,
         following: json["following"] == null
-            ? null
-            : List<Follower>.from(
-                json["following"].map((x) => Follower.fromJson(x))),
+            ? []
+            : List<String>.from(json["following"].map((x) => x)),
         followers: json["followers"] == null
-            ? null
-            : List<Follower>.from(
-                json["followers"].map((x) => Follower.fromJson(x))),
+            ? []
+            : List<String>.from(json["followers"].map((x) => x)),
         savedPosts: json["savedPosts"] == null
             ? null
-            : List<Follower>.from(
-                json["savedPosts"].map((x) => Follower.fromJson(x))),
+            : List<String>.from(json["savedPosts"].map((x) => x)),
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
         address: json["address"] ?? StringRes.notAdded,
@@ -78,26 +71,21 @@ class User {
         penName: json["pen_name"] ?? '',
         phone: json["phone"] ?? StringRes.notAdded,
         birthdate: json["birthdate"] ?? '1/1/1901',
-        totalFollowers: json["totalFollowers"] ?? 0,
-        totalFollowing: json["totalFollowing"] ?? 0,
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "_id": id,
         "name": name,
         "email": email,
         "profileImage": profileImage,
         "coverImage": coverImage,
         "gender": gender,
-        "following": following == null
-            ? null
-            : List<dynamic>.from(following!.map((x) => x.toJson())),
-        "followers": followers == null
-            ? null
-            : List<dynamic>.from(followers!.map((x) => x.toJson())),
+        "following": List<String>.from(following.map((x) => x)),
+        "followers": List<String>.from(followers.map((x) => x)),
         "savedPosts": savedPosts == null
             ? null
-            : List<dynamic>.from(savedPosts!.map((x) => x.toJson())),
+            : List<String>.from(savedPosts!.map((x) => x)),
         "createdAt": createdAt == null ? null : createdAt!,
         "updatedAt": updatedAt == null ? null : updatedAt!,
         "address": address,
@@ -105,32 +93,5 @@ class User {
         "pen_name": penName,
         "phone": phone,
         "birthdate": birthdate,
-        "totalFollowers": totalFollowers,
-        "totalFollowing": totalFollowing,
-      };
-}
-
-class Follower {
-  Follower({
-    required this.name,
-    required this.email,
-  });
-
-  final String name;
-  final String email;
-
-  factory Follower.fromRawJson(String str) =>
-      Follower.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Follower.fromJson(Map<String, dynamic> json) => Follower(
-        name: json["name"] == null ? null : json["name"],
-        email: json["email"] == null ? null : json["email"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "name": name == null ? null : name,
-        "email": email == null ? null : email,
       };
 }

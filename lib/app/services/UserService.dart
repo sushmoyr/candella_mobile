@@ -19,11 +19,21 @@ class UserService extends GetConnect {
     );
   }
 
-  Future<Response<User>> getUserFromId(String id) {
-    return get(
+  Future<Response<User>> getUserFromId(String id) async {
+    String token = Prefs.getToken()!;
+    printInfo(info: token);
+    var data = await get(
       "${EndPoints.info}/$id",
+      headers: {"token": token},
       decoder: (json) => User.fromJson(json),
     );
+    data.printInfo();
+    printInfo(info: data.body.toString());
+
+    if (data.hasError) {
+      return Future.error('error');
+    }
+    return data;
   }
 
   Future<Response<User>> updateAuthInfo(body) {
