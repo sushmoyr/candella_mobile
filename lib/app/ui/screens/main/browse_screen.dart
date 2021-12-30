@@ -1,5 +1,6 @@
 import 'package:candella/app/data/controllers/BrowseScreenController.dart';
 import 'package:candella/app/data/models/content.dart';
+import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:candella/app/ui/widgets/default_content_item_card.dart';
 import 'package:candella/app/ui/widgets/landscape_content_item_card.dart';
 import 'package:candella/app/ui/widgets/title_only_appbar.dart';
@@ -28,31 +29,37 @@ class BrowseScreen extends GetView<BrowseScreenController> {
                 Obx(
                   () => StorySection(
                     data: controller.storyData.value,
+                    onSeeMore: _handleOnSeeMoreClicked,
                   ),
                 ),
                 Obx(
                   () => NovelSection(
                     data: controller.novelData.value,
+                    onSeeMore: _handleOnSeeMoreClicked,
                   ),
                 ),
                 Obx(
                   () => PoemSection(
                     data: controller.poemData.value,
+                    onSeeMore: _handleOnSeeMoreClicked,
                   ),
                 ),
                 Obx(
                   () => ComicSection(
                     data: controller.comicData.value,
+                    onSeeMore: _handleOnSeeMoreClicked,
                   ),
                 ),
                 Obx(
                   () => JournalSection(
                     data: controller.journalData.value,
+                    onSeeMore: _handleOnSeeMoreClicked,
                   ),
                 ),
                 Obx(
                   () => PhotographSection(
                     data: controller.photographData.value,
+                    onSeeMore: _handleOnSeeMoreClicked,
                   ),
                 ),
               ],
@@ -62,10 +69,14 @@ class BrowseScreen extends GetView<BrowseScreenController> {
       ),
     );
   }
+
+  void _handleOnSeeMoreClicked(Category category) {
+    printInfo(info: category.name);
+  }
 }
 
 class StorySection extends StatelessWidget {
-  final VoidCallback? onSeeMore;
+  final Function(Category)? onSeeMore;
   final Function(Content)? onContentClick;
 
   const StorySection({
@@ -82,18 +93,11 @@ class StorySection extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                'Story',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(
-                height: 16,
+              TitleWithSeeAll(
+                title: 'Stories',
+                onSeeAllClick: () {
+                  onSeeMore!(Category.story);
+                },
               ),
               CarouselSlider(
                 options: CarouselOptions(
@@ -120,7 +124,7 @@ class StorySection extends StatelessWidget {
 }
 
 class NovelSection extends StatelessWidget {
-  final VoidCallback? onSeeMore;
+  final Function(Category)? onSeeMore;
   final Function(Content)? onContentClick;
 
   const NovelSection({
@@ -137,18 +141,11 @@ class NovelSection extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                'Novels',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(
-                height: 16,
+              TitleWithSeeAll(
+                title: 'Novels',
+                onSeeAllClick: () {
+                  onSeeMore!(Category.novel);
+                },
               ),
               CarouselSlider(
                 options: CarouselOptions(
@@ -175,7 +172,7 @@ class NovelSection extends StatelessWidget {
 }
 
 class PoemSection extends StatelessWidget {
-  final VoidCallback? onSeeMore;
+  final Function(Category)? onSeeMore;
   final Function(Content)? onContentClick;
 
   const PoemSection({
@@ -192,18 +189,11 @@ class PoemSection extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                'Story',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(
-                height: 16,
+              TitleWithSeeAll(
+                title: 'Poems',
+                onSeeAllClick: () {
+                  onSeeMore!(Category.poem);
+                },
               ),
               CarouselSlider(
                 options: CarouselOptions(
@@ -230,7 +220,7 @@ class PoemSection extends StatelessWidget {
 }
 
 class ComicSection extends StatelessWidget {
-  final VoidCallback? onSeeMore;
+  final Function(Category)? onSeeMore;
   final Function(Content)? onContentClick;
 
   const ComicSection({
@@ -247,18 +237,11 @@ class ComicSection extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                'Comic',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(
-                height: 16,
+              TitleWithSeeAll(
+                title: 'Comics',
+                onSeeAllClick: () {
+                  onSeeMore!(Category.comic);
+                },
               ),
               CarouselSlider(
                 options: CarouselOptions(
@@ -285,7 +268,7 @@ class ComicSection extends StatelessWidget {
 }
 
 class JournalSection extends StatelessWidget {
-  final VoidCallback? onSeeMore;
+  final Function(Category)? onSeeMore;
   final Function(Content)? onContentClick;
 
   const JournalSection({
@@ -302,18 +285,11 @@ class JournalSection extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                'Journal',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(
-                height: 16,
+              TitleWithSeeAll(
+                title: 'Journals',
+                onSeeAllClick: () {
+                  onSeeMore!(Category.journal);
+                },
               ),
               ListView.builder(
                 itemCount: data.length,
@@ -337,7 +313,7 @@ class JournalSection extends StatelessWidget {
 }
 
 class PhotographSection extends StatelessWidget {
-  final VoidCallback? onSeeMore;
+  final Function(Category)? onSeeMore;
   final Function(Content)? onContentClick;
 
   const PhotographSection({
@@ -354,18 +330,11 @@ class PhotographSection extends StatelessWidget {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                'Photographs',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(
-                height: 16,
+              TitleWithSeeAll(
+                title: 'Photographs',
+                onSeeAllClick: () {
+                  onSeeMore!(Category.photography);
+                },
               ),
               ListView.builder(
                 itemCount: data.length,
@@ -385,5 +354,44 @@ class PhotographSection extends StatelessWidget {
             ],
           )
         : Container();
+  }
+}
+
+class TitleWithSeeAll extends StatelessWidget {
+  const TitleWithSeeAll({
+    Key? key,
+    required this.title,
+    this.titleTextStyle,
+    this.onSeeAllClick,
+    this.seeAllTextStyle,
+  }) : super(key: key);
+
+  final String title;
+  final TextStyle? titleTextStyle;
+  final VoidCallback? onSeeAllClick;
+  final TextStyle? seeAllTextStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle defaultStyle = Theme.of(context)
+        .textTheme
+        .headline5!
+        .copyWith(color: Theme.of(context).primaryColor);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: titleTextStyle ?? defaultStyle,
+          ),
+          TextButton(
+            onPressed: onSeeAllClick ?? () {},
+            child: Text('See More'),
+          ),
+        ],
+      ),
+    );
   }
 }
