@@ -2,7 +2,6 @@ import 'package:candella/app/data/bindings/add_chapter_binding.dart';
 import 'package:candella/app/data/bindings/auth_binding.dart';
 import 'package:candella/app/data/bindings/create_content_binding.dart';
 import 'package:candella/app/data/bindings/extras_binding.dart';
-import 'package:candella/app/data/bindings/home_screen_binding.dart';
 import 'package:candella/app/data/bindings/main_screen_binding.dart';
 import 'package:candella/app/data/bindings/profile_screen_binding.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
@@ -13,7 +12,6 @@ import 'package:candella/app/ui/screens/create_content_screen.dart';
 import 'package:candella/app/ui/screens/edit_profile_screen.dart';
 import 'package:candella/app/ui/screens/extras_screen.dart';
 import 'package:candella/app/ui/screens/genre_selector.dart';
-import 'package:candella/app/ui/screens/main/home_screen.dart';
 import 'package:candella/app/ui/screens/main/main_screen.dart';
 import 'package:candella/app/ui/screens/profile_screen.dart';
 import 'package:flutter/widgets.dart';
@@ -32,11 +30,6 @@ class AppPages {
       name: Routes.main,
       page: () => MainScreen(),
       binding: MainScreenBinding(),
-    ),
-    GetPage(
-      name: Routes.home,
-      page: () => HomeScreen(),
-      binding: HomeScreenBinding(),
     ),
     GetPage(
       name: Routes.createContent,

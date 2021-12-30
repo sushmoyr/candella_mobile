@@ -2,12 +2,12 @@ import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/data/models/genre.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 
 class LandscapeContentItemCard extends StatelessWidget {
   final Content content;
   final VoidCallback onClick;
-  final VoidCallback? onAuthorClick;
   final double? elevation;
 
   const LandscapeContentItemCard({
@@ -15,7 +15,6 @@ class LandscapeContentItemCard extends StatelessWidget {
     required this.content,
     required this.onClick,
     this.elevation,
-    this.onAuthorClick,
   }) : super(key: key);
 
   @override
@@ -55,7 +54,9 @@ class LandscapeContentItemCard extends StatelessWidget {
                     horizontalTitleGap: 4,
                     contentPadding: EdgeInsets.zero,
                     minVerticalPadding: 0,
-                    onTap: onAuthorClick,
+                    onTap: () {
+                      printInfo(info: content.author.name);
+                    },
                     title: Text(
                       content.author.name,
                       overflow: TextOverflow.ellipsis,

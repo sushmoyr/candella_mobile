@@ -1,9 +1,7 @@
 import 'package:candella/app/data/controllers/main_screen_controller.dart';
-import 'package:candella/app/services/prefs.dart';
 import 'package:candella/app/ui/screens/main/browse_screen.dart';
 import 'package:candella/app/ui/screens/main/chat_screen.dart';
 import 'package:candella/app/ui/screens/main/home_screen.dart';
-import 'package:candella/app/ui/screens/profile_screen.dart';
 import 'package:candella/app/ui/screens/main/search_screen.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +21,9 @@ class MainScreen extends GetView<MainScreenController> {
           ),
           children: [
             Get.find<HomeScreen>(),
-            BrowseScreen(),
+            Get.find<BrowseScreen>(),
             SearchScreen(),
             ChatScreen(),
-            ProfileScreen()
           ],
           controller: controller.pageController,
         ),

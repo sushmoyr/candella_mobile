@@ -70,13 +70,17 @@ class ProfileScreenController extends GetxController {
         loading(false);
         print(userData);
         user(User.fromRawJson(userData));
+        _updateInputControllers();
       }
     } else {
       profileType = ProfileType.other;
-      _userService.getUserFromId(id);
+      loading(true);
+      var response = await _userService.getUserFromId(id);
+      loading(false);
+      if (!response.hasError) {
+        user(response.body);
+      }
     }
-
-    _updateInputControllers();
   }
 
   Future<Result> updateUser() async {

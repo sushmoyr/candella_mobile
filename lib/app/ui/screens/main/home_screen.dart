@@ -111,6 +111,13 @@ class HomeScreen extends GetView<HomeController> {
                 SizedBox(
                   height: 16,
                 ),
+                Text(
+                  'Latest Releases',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
                 Obx(
                   () => ListView.builder(
                     physics: NeverScrollableScrollPhysics(),

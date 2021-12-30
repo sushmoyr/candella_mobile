@@ -2,19 +2,18 @@ import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/data/models/genre.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 
 class DefaultContentItemCard extends StatelessWidget {
   final Content content;
   final VoidCallback onItemClick;
-  final VoidCallback? onAuthorClick;
   final double? elevation;
 
   const DefaultContentItemCard({
     Key? key,
     required this.content,
     required this.onItemClick,
-    this.onAuthorClick,
     this.elevation,
   }) : super(key: key);
 
@@ -59,7 +58,9 @@ class DefaultContentItemCard extends StatelessWidget {
                   ListTile(
                     horizontalTitleGap: 4,
                     contentPadding: EdgeInsets.zero,
-                    onTap: onAuthorClick,
+                    onTap: () {
+                      printInfo(info: content.author.name);
+                    },
                     leading: ClipOval(
                       child: CircleAvatar(
                         radius: 16,
