@@ -1,5 +1,6 @@
 import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/data/models/genre.dart';
+import 'package:candella/app/data/models/review.dart';
 import 'package:candella/app/data/models/success.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:candella/app/services/prefs.dart';
@@ -64,6 +65,13 @@ class ContentService extends GetConnect {
         "category": catId,
       },
       decoder: (json) => Content.fromList(json),
+    );
+  }
+
+  Future<Response<List<Review>>> loadReview(String id, {page = 1}) {
+    return get(
+      EndPoints.reviews + '/$id',
+      decoder: (json) => Review.fromList(json),
     );
   }
 }

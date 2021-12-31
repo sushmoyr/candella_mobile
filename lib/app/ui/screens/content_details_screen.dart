@@ -1,6 +1,7 @@
 import 'package:candella/app/data/controllers/content_details_controller.dart';
 import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/data/models/genre.dart';
+import 'package:candella/app/data/models/review.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class ContentDetails extends GetView<ContentDetailsController> {
     toolBarHeight.printInfo();
 
     controller.content = _content;
+    controller.loadReviews(_content.id);
 
     TextTheme textTheme = Theme.of(context).textTheme;
     _content.toRawJson().printInfo();
@@ -108,6 +110,9 @@ class ContentDetails extends GetView<ContentDetailsController> {
                   Obx(
                     () => ChapterXReview(index: controller.selectedTab.value),
                   ),
+                  SizedBox(
+                    height: 24,
+                  ),
                 ]),
               ),
             )
@@ -171,13 +176,17 @@ class ContentDetails extends GetView<ContentDetailsController> {
   }
 }
 
-class ChapterXReview extends StatelessWidget {
+class ChapterXReview extends GetView<ContentDetailsController> {
   const ChapterXReview({Key? key, required this.index}) : super(key: key);
   final int index;
 
   @override
   Widget build(BuildContext context) {
-    return (index == 0) ? ChapterView() : Text('See Review');
+    return (index == 0)
+        ? ChapterView()
+        : Obx(
+            () => ReviewView(reviews: controller.reviews.value),
+          );
   }
 }
 
@@ -197,19 +206,41 @@ class ChapterView extends GetView<ContentDetailsController> {
         return _emptyWidget(context);
       }
 
-      return _chapterList(value);
+      return _chapterList(value, context);
     } else {
       return _emptyWidget(context);
     }
   }
 
-  Widget _chapterList(Content value) {
+  Widget _chapterList(Content value, BuildContext context) {
     return ListView.builder(
       itemCount: value.chapters.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(value.chapters[index].chapterName),
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: (index == 0) ? 0 : 8),
+          decoration: BoxDecoration(
+            border: Border.all(),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Text(
+                  (index + 1).toString() + '. ',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  value.chapters[index].chapterName,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -238,11 +269,119 @@ class ChapterView extends GetView<ContentDetailsController> {
   }
 }
 
-class ReviewView extends GetView<ContentDetailsController> {
-  const ReviewView({Key? key}) : super(key: key);
+class ReviewView extends StatelessWidget {
+  final List<Review>? reviews;
+
+  const ReviewView({Key? key, required this.reviews}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    printInfo(info: reviews.toString());
+    if (reviews != null) {
+      if (reviews!.isEmpty) {
+        return _emptyWidget(context);
+      } else {
+        var data = reviews!;
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: data.length,
+          itemBuilder: (context, idx) {
+            return ReviewCard(review: data[idx]);
+          },
+        );
+      }
+    }
+    return _emptyWidget(context);
+  }
+
+  Widget _emptyWidget(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Icon(
+            Ionicons.sad_outline,
+            size: 100,
+            color: Colors.grey,
+          ),
+          Text(
+            'No Reviews Added',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ReviewCard extends StatelessWidget {
+  const ReviewCard({Key? key, required this.review}) : super(key: key);
+  final Review review;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 8,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            leading: ClipOval(
+              child: CircleAvatar(
+                child: Image.network(
+                  EndPoints.host + review.author.profileImage,
+                ),
+              ),
+            ),
+            title: Text(review.author.name),
+            subtitle: Text(_getDateString(review.createdAt)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              bottom: 16,
+            ),
+            child: Text(
+              review.text,
+              maxLines: null,
+              softWrap: true,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  String _getDateString(DateTime createdAt) {
+    DateTime currentDate = DateTime.now();
+
+    var diff = currentDate.difference(createdAt);
+    String result = 'Building';
+
+    if (diff.inHours < 1) {
+      if (diff.inMinutes < 1) {
+        result = 'A few moments ago';
+      } else {
+        result = '${diff.inMinutes} minutes ago';
+      }
+    } else if (diff.inHours < 24) {
+      result = '${diff.inHours} hours ago';
+    } else {
+      if (diff.inDays == 1) {
+        result = '${diff.inDays} day ago';
+      } else {
+        result = '${diff.inDays} days ago';
+      }
+    }
+
+    return result;
   }
 }
