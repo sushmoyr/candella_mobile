@@ -58,12 +58,14 @@ class ContentService extends GetConnect {
     );
   }
 
-  Future<Response<List<Content>>> loadPostByCategory(String catId) async {
+  Future<Response<List<Content>>> getPostByCategory(String catId,
+      {int page = 1}) async {
     printInfo(info: 'Loading cat post');
     return get(
       EndPoints.content,
       query: {
         "category": catId,
+        "page": page.toString(),
       },
       decoder: (json) => Content.fromList(json),
     );

@@ -94,7 +94,7 @@ class PhotographyChapterBody implements ChapterBody {
       PhotographyChapterBody(
           images: List<PhotoContent>.from(
             json['images'].map(
-                  (x) => PhotoContent.fromJson(x),
+              (x) => PhotoContent.fromJson(x),
             ),
           ),
           description: json['description']);

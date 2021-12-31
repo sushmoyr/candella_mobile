@@ -28,7 +28,7 @@ class BrowseScreenController extends GetxController {
   }
 
   void _loadStoryData() {
-    _contentService.loadPostByCategory(Category.story.id).then((value) {
+    _contentService.getPostByCategory(Category.story.id).then((value) {
       if (!value.hasError) {
         storyData(value.body ?? <Content>[]);
       }
@@ -44,7 +44,7 @@ class BrowseScreenController extends GetxController {
   }
 
   void _loadNovelData() {
-    _contentService.loadPostByCategory(Category.novel.id).then((value) {
+    _contentService.getPostByCategory(Category.novel.id).then((value) {
       if (!value.hasError) {
         novelData(value.body ?? <Content>[]);
       }
@@ -60,7 +60,7 @@ class BrowseScreenController extends GetxController {
   }
 
   void _loadPoemData() {
-    _contentService.loadPostByCategory(Category.poem.id).then((value) {
+    _contentService.getPostByCategory(Category.poem.id).then((value) {
       if (!value.hasError) {
         poemData(value.body ?? <Content>[]);
       }
@@ -76,7 +76,7 @@ class BrowseScreenController extends GetxController {
   }
 
   void _loadComicData() {
-    _contentService.loadPostByCategory(Category.comic.id).then((value) {
+    _contentService.getPostByCategory(Category.comic.id).then((value) {
       if (!value.hasError) {
         comicData(value.body ?? <Content>[]);
       }
@@ -92,7 +92,7 @@ class BrowseScreenController extends GetxController {
   }
 
   void _loadJournalData() {
-    _contentService.loadPostByCategory(Category.journal.id).then((value) {
+    _contentService.getPostByCategory(Category.journal.id).then((value) {
       if (!value.hasError) {
         journalData(value.body ?? <Content>[]);
       }
@@ -108,7 +108,7 @@ class BrowseScreenController extends GetxController {
   }
 
   void _loadPhotographData() {
-    _contentService.loadPostByCategory(Category.photography.id).then((value) {
+    _contentService.getPostByCategory(Category.photography.id).then((value) {
       if (!value.hasError) {
         photographData(value.body ?? <Content>[]);
       }
