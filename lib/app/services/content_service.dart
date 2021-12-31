@@ -1,3 +1,4 @@
+import 'package:candella/app/data/models/chapter.dart';
 import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/data/models/genre.dart';
 import 'package:candella/app/data/models/review.dart';
@@ -91,6 +92,17 @@ class ContentService extends GetConnect {
     get(
       EndPoints.content + '/$id',
       headers: {"token": token},
+    );
+  }
+
+  Future<Response<Chapter>> loadChapter(String chapterId) {
+    final String token = Prefs.getToken()!;
+    return get(
+      EndPoints.chapter + '/$chapterId',
+      headers: {
+        "token": token,
+      },
+      decoder: (json) => Chapter.fromJson(json),
     );
   }
 }

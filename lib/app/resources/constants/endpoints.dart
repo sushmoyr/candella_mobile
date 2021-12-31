@@ -14,5 +14,5 @@ class EndPoints {
   static String authUpdate = '/update';
   static String userUpdate = '/u/update';
 
-  static String addChapter = '/c/chapter';
+  static String chapter = '/c/chapter';
 }

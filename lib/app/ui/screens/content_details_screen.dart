@@ -17,7 +17,6 @@ class ContentDetails extends GetView<ContentDetailsController> {
   final Content _content = Get.arguments['content'];
 
   @override
-  // TODO: implement controller
   ContentDetailsController get controller {
     var con = super.controller;
     con.updateView(_content);
@@ -122,7 +121,7 @@ class ContentDetails extends GetView<ContentDetailsController> {
                     ],
                   ),
                   Obx(
-                        () => ChapterXReview(index: controller.selectedTab.value),
+                    () => ChapterXReview(index: controller.selectedTab.value),
                   ),
                   SizedBox(
                     height: 24,
@@ -297,28 +296,35 @@ class ChapterView extends GetView<ContentDetailsController> {
       itemCount: value.chapters.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: (index == 0) ? 0 : 8),
-          decoration: BoxDecoration(
-            border: Border.all(),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Text(
-                  (index + 1).toString() + '. ',
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  value.chapters[index].chapterName,
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ],
+        return InkWell(
+          onTap: () {
+            Get.toNamed(Routes.chapter, parameters: {
+              "chapterId": value.chapters[index].id,
+            });
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: (index == 0) ? 0 : 8),
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Text(
+                    (index + 1).toString() + '. ',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    value.chapters[index].chapterName,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                ],
+              ),
             ),
           ),
         );

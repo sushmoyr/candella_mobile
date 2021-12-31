@@ -11,8 +11,7 @@ class ChapterService extends GetConnect {
 
   //add chapter
   Future<Response> addChapter(body) {
-    return post(EndPoints.addChapter, body,
-        headers: {"token": Prefs.getToken()!});
+    return post(EndPoints.chapter, body, headers: {"token": Prefs.getToken()!});
   }
 
 //get single chapter

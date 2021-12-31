@@ -128,13 +128,13 @@ class HomeScreen extends GetView<HomeController> {
                           data.category.id == Category.photography.id) {
                         return LandscapeContentItemCard(
                           content: data,
-                          onClick: () {},
+                          onClick: _handleItemClick,
                           elevation: 4,
                         );
                       } else {
                         return DefaultContentItemCard(
                           content: data,
-                          onItemClick: () {},
+                          onItemClick: _handleItemClick,
                           elevation: 4,
                         );
                       }
@@ -146,6 +146,14 @@ class HomeScreen extends GetView<HomeController> {
           ),
         ),
       ),
+    );
+  }
+
+  void _handleItemClick(Content content) {
+    printInfo(info: content.toRawJson());
+    Get.toNamed(
+      Routes.content,
+      arguments: {"content": content},
     );
   }
 }

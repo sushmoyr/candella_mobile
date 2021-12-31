@@ -1,5 +1,6 @@
 import 'package:candella/app/data/bindings/add_chapter_binding.dart';
 import 'package:candella/app/data/bindings/auth_binding.dart';
+import 'package:candella/app/data/bindings/browse_by_cat_binding.dart';
 import 'package:candella/app/data/bindings/chapter_details_binding.dart';
 import 'package:candella/app/data/bindings/content_details_binding.dart';
 import 'package:candella/app/data/bindings/create_content_binding.dart';
@@ -11,6 +12,7 @@ import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/services/prefs.dart';
 import 'package:candella/app/ui/screens/add_chapter.dart';
 import 'package:candella/app/ui/screens/auth_page.dart';
+import 'package:candella/app/ui/screens/browse_by_category_screen.dart';
 import 'package:candella/app/ui/screens/chapter_details_screen.dart';
 import 'package:candella/app/ui/screens/content_details_screen.dart';
 import 'package:candella/app/ui/screens/create_content_screen.dart';
@@ -98,6 +100,13 @@ class AppPages {
       transition: Transition.rightToLeft,
       curve: Curves.decelerate,
       binding: ChapterDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.browseByCategory,
+      page: () => BrowseByCategory(),
+      transition: Transition.rightToLeft,
+      curve: Curves.decelerate,
+      binding: BrowseByCategoryBinding(),
     ),
   ];
 

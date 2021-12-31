@@ -1,6 +1,7 @@
 import 'package:candella/app/data/controllers/BrowseScreenController.dart';
 import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
+import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/ui/widgets/default_content_item_card.dart';
 import 'package:candella/app/ui/widgets/landscape_content_item_card.dart';
 import 'package:candella/app/ui/widgets/title_only_appbar.dart';
@@ -72,6 +73,7 @@ class BrowseScreen extends GetView<BrowseScreenController> {
 
   void _handleOnSeeMoreClicked(Category category) {
     printInfo(info: category.name);
+    Get.toNamed(Routes.browseByCategory, arguments: category);
   }
 }
 
@@ -108,15 +110,12 @@ class StorySection extends StatelessWidget {
                 items: List.from(
                   data.map(
                     (element) => DefaultContentItemCard(
-                        content: element,
-                        onItemClick: () {
-                          if (onContentClick != null) {
-                            onContentClick!(element);
-                          }
-                        }),
+                      content: element,
+                      onItemClick: onContentClick,
+                    ),
                   ),
                 ),
-              )
+              ),
             ],
           )
         : Container();
@@ -155,13 +154,8 @@ class NovelSection extends StatelessWidget {
                 ),
                 items: List.from(
                   data.map(
-                    (element) => DefaultContentItemCard(
-                        content: element,
-                        onItemClick: () {
-                          if (onContentClick != null) {
-                            onContentClick!(element);
-                          }
-                        }),
+                        (element) => DefaultContentItemCard(
+                        content: element, onItemClick: onContentClick),
                   ),
                 ),
               )
@@ -203,13 +197,8 @@ class PoemSection extends StatelessWidget {
                 ),
                 items: List.from(
                   data.map(
-                    (element) => DefaultContentItemCard(
-                        content: element,
-                        onItemClick: () {
-                          if (onContentClick != null) {
-                            onContentClick!(element);
-                          }
-                        }),
+                        (element) => DefaultContentItemCard(
+                        content: element, onItemClick: onContentClick),
                   ),
                 ),
               )
@@ -251,13 +240,8 @@ class ComicSection extends StatelessWidget {
                 ),
                 items: List.from(
                   data.map(
-                    (element) => DefaultContentItemCard(
-                        content: element,
-                        onItemClick: () {
-                          if (onContentClick != null) {
-                            onContentClick!(element);
-                          }
-                        }),
+                        (element) => DefaultContentItemCard(
+                        content: element, onItemClick: onContentClick),
                   ),
                 ),
               )
@@ -298,11 +282,7 @@ class JournalSection extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return LandscapeContentItemCard(
                     content: data[index],
-                    onClick: () {
-                      if (onContentClick != null) {
-                        onContentClick!(data[index]);
-                      }
-                    },
+                    onClick: onContentClick,
                   );
                 },
               )
@@ -343,11 +323,7 @@ class PhotographSection extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return LandscapeContentItemCard(
                     content: data[index],
-                    onClick: () {
-                      if (onContentClick != null) {
-                        onContentClick!(data[index]);
-                      }
-                    },
+                    onClick: onContentClick,
                   );
                 },
               )

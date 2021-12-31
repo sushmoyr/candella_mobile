@@ -16,7 +16,7 @@ class FileService extends GetConnect {
     try {
       File file = File(fileUrl);
       var name = fileUrl.split('/').last;
-      print(name);
+
       MultipartFile f = MultipartFile(file, filename: name);
 
       FormData formData = FormData({"file": f});

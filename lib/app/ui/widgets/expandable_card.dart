@@ -91,10 +91,7 @@ class _ExpandableCardState extends State<ExpandableCard> {
 
   void _setExpansion() {
     setState(() {
-      print('Set expansion from');
-      print(isExpanded);
       isExpanded = !isExpanded;
-      print('to $isExpanded');
     });
   }
 }

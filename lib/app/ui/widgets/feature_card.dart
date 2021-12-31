@@ -32,14 +32,17 @@ class FeaturedCard extends StatelessWidget {
             children: [
               SizedBox(
                 width: double.infinity,
+                height: double.infinity,
                 child: Image.network(
                   EndPoints.host + content.coverImage,
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(
+              Container(
+                color: Colors.white70,
                 width: double.infinity,
                 child: ClipRect(
+                  clipBehavior: Clip.antiAlias,
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
                       sigmaX: 5,

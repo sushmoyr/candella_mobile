@@ -9,6 +9,7 @@ abstract class Routes {
   static const addChapter = '/add_chapter';
   static const content = '/content';
   static const chapter = '/content/chapter';
+  static const browseByCategory = '/browse/category';
 
   static String selectGenre = '/select_genre';
 

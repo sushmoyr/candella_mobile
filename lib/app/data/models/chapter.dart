@@ -24,7 +24,8 @@ class Chapter {
 
   factory Chapter.fromJson(Map<String, dynamic> json) {
     ChapterBody body;
-    Category category = Category.fromJson(json['category']);
+    String categoryId = json['category'];
+    Category category = getCategoryById(categoryId);
 
     if (category == Category.photography) {
       body = PhotographyChapterBody.fromJson(json['body']);
@@ -35,7 +36,7 @@ class Chapter {
     }
 
     return Chapter(
-      author: json['author'],
+      author: Author.fromJson(json['author']),
       category: json['category'],
       chapterName: json['chapterName'],
       contentId: json['contentId'],
@@ -93,7 +94,7 @@ class PhotographyChapterBody implements ChapterBody {
       PhotographyChapterBody(
           images: List<PhotoContent>.from(
             json['images'].map(
-              (x) => PhotographyChapterBody.fromJson(x),
+                  (x) => PhotoContent.fromJson(x),
             ),
           ),
           description: json['description']);
