@@ -4,17 +4,14 @@ import 'package:candella/app/resources/constants/typedefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class BrowseByCategory extends StatelessWidget {
+class BrowseByCategory extends GetView<BrowseByCatController> {
   BrowseByCategory({Key? key}) : super(key: key);
 
   final Category _category = Get.arguments;
-  final BrowseByCatController controller = BrowseByCatController(
-    contentService: Get.find(),
-    currentCategory: Get.arguments,
-  );
 
   @override
   Widget build(BuildContext context) {
+    controller.currentCategory = _category;
     controller.initData();
     return Scaffold(
       extendBodyBehindAppBar: false,

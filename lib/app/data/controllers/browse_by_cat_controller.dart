@@ -5,11 +5,10 @@ import 'package:get/get.dart';
 
 class BrowseByCatController extends GetxController {
   final ContentService contentService;
-  final Category currentCategory;
+  Category currentCategory = Category.story;
 
   BrowseByCatController({
     required this.contentService,
-    required this.currentCategory,
   });
 
   Rx<List<Content>> contentData = Rx(<Content>[]);
@@ -19,8 +18,8 @@ class BrowseByCatController extends GetxController {
 
   @override
   void onInit() {
-    currentCategory.toJson().toString().printInfo();
-    initData();
+    /*currentCategory.toJson().toString().printInfo();
+    initData();*/
     super.onInit();
   }
 

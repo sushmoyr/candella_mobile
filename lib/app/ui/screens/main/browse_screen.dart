@@ -240,7 +240,7 @@ class ComicSection extends StatelessWidget {
                 ),
                 items: List.from(
                   data.map(
-                        (element) => DefaultContentItemCard(
+                    (element) => DefaultContentItemCard(
                         content: element, onItemClick: onContentClick),
                   ),
                 ),
