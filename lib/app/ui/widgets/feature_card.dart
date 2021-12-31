@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:candella/app/data/models/FeaturedContent/featured_content_model.dart';
+import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/dynamic_extensions.dart';
@@ -11,8 +11,8 @@ class FeaturedCard extends StatelessWidget {
     required this.content,
     required this.onItemClicked,
   }) : super(key: key);
-  final FeaturedContent content;
-  final Function(FeaturedContent) onItemClicked;
+  final Content content;
+  final Function(Content) onItemClicked;
 
   @override
   Widget build(BuildContext context) {

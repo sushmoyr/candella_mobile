@@ -1,5 +1,4 @@
 import 'package:candella/app/data/controllers/home_screen_controller.dart';
-import 'package:candella/app/data/models/FeaturedContent/featured_content_model.dart';
 import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
@@ -157,7 +156,7 @@ class FeatureSlider extends StatelessWidget {
     required this.data,
   }) : super(key: key);
 
-  final RxList<FeaturedContent> data;
+  final RxList<Content> data;
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +179,11 @@ class FeatureSlider extends StatelessWidget {
     );
   }
 
-  void _handleItemClick(FeaturedContent content) {
+  void _handleItemClick(Content content) {
     printInfo(info: content.toRawJson());
+    Get.toNamed(
+      Routes.content,
+      arguments: {"content": content},
+    );
   }
 }

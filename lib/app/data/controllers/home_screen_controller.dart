@@ -1,4 +1,3 @@
-import 'package:candella/app/data/models/FeaturedContent/featured_content_model.dart';
 import 'package:candella/app/data/models/User.dart';
 import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/services/UserService.dart';
@@ -13,7 +12,7 @@ class HomeController extends GetxController {
   late Rx<User> user = User().obs;
   final UserService _userService = Get.find();
   final ContentService _contentService = Get.find();
-  final RxList<FeaturedContent> featuredContents = RxList(<FeaturedContent>[]);
+  final RxList<Content> featuredContents = RxList(<Content>[]);
   final RxList<Content> latestContents = RxList(<Content>[]);
 
   @override
@@ -36,7 +35,7 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
-  Future<List<FeaturedContent>?> _loadFeaturedPosts() async {
+  Future<List<Content>?> _loadFeaturedPosts() async {
     try {
       var featuredPosts = await _contentService.loadFeaturedPosts();
 
