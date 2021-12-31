@@ -85,4 +85,12 @@ class ContentService extends GetConnect {
       },
     );
   }
+
+  void updateView(String id) {
+    final String token = Prefs.getToken()!;
+    get(
+      EndPoints.content + '/$id',
+      headers: {"token": token},
+    );
+  }
 }

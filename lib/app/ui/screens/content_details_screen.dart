@@ -1,9 +1,12 @@
 import 'package:candella/app/data/controllers/content_details_controller.dart';
+import 'package:candella/app/data/models/User.dart';
 import 'package:candella/app/data/models/content.dart';
 import 'package:candella/app/data/models/genre.dart';
 import 'package:candella/app/data/models/review.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:candella/app/resources/constants/typedefs.dart';
+import 'package:candella/app/resources/routes/app_routes.dart';
+import 'package:candella/app/services/prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
@@ -12,6 +15,14 @@ class ContentDetails extends GetView<ContentDetailsController> {
   ContentDetails({Key? key}) : super(key: key);
 
   final Content _content = Get.arguments['content'];
+
+  @override
+  // TODO: implement controller
+  ContentDetailsController get controller {
+    var con = super.controller;
+    con.updateView(_content);
+    return con;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +40,9 @@ class ContentDetails extends GetView<ContentDetailsController> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        floatingActionButton: _getFab(),
         body: CustomScrollView(
+          controller: controller.scrollController,
           physics: BouncingScrollPhysics(),
           slivers: [
             SliverAppBar(
@@ -109,7 +122,7 @@ class ContentDetails extends GetView<ContentDetailsController> {
                     ],
                   ),
                   Obx(
-                    () => ChapterXReview(index: controller.selectedTab.value),
+                        () => ChapterXReview(index: controller.selectedTab.value),
                   ),
                   SizedBox(
                     height: 24,
@@ -174,6 +187,27 @@ class ContentDetails extends GetView<ContentDetailsController> {
       ratio = 2 / 3;
     }
     return (width / ratio);
+  }
+
+  Widget? _getFab() {
+    User currentUser = User.fromRawJson(Prefs.getCurrentUser()!);
+    if (_content.author.id == currentUser.id) {
+      return Obx(
+        () => Visibility(
+          child: FloatingActionButton.extended(
+            icon: Icon(Ionicons.add),
+            onPressed: () {
+              Get.toNamed(Routes.addChapter, arguments: {
+                "category": _content.category.id,
+                "contentId": _content.id,
+              });
+            },
+            label: Text('Add Chapter'),
+          ),
+          visible: controller.visibleFAB.value,
+        ),
+      );
+    }
   }
 }
 
