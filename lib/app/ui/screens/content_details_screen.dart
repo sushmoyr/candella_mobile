@@ -61,7 +61,8 @@ class ContentDetails extends GetView<ContentDetailsController> {
                     leading: ClipOval(
                       child: CircleAvatar(
                         child: Image.network(
-                            EndPoints.host + _content.author.profileImage),
+                          EndPoints.host + _content.author.profileImage,
+                        ),
                       ),
                     ),
                     title: Text(
@@ -184,9 +185,54 @@ class ChapterXReview extends GetView<ContentDetailsController> {
   Widget build(BuildContext context) {
     return (index == 0)
         ? ChapterView()
-        : Obx(
-            () => ReviewView(reviews: controller.reviews.value),
+        : Column(
+            //TODO Test it
+            children: [
+              AddReviewWidget(),
+              Obx(
+                () => ReviewView(reviews: controller.reviews.value),
+              ),
+            ],
           );
+  }
+}
+
+class AddReviewWidget extends GetView<ContentDetailsController> {
+  const AddReviewWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Obx(
+            () => TextFormField(
+              enabled: !controller.loading.value,
+              controller: controller.addReviewTextController,
+              maxLines: null,
+              textInputAction: TextInputAction.newline,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                labelText: 'Add Review',
+              ),
+            ),
+          ),
+        ),
+        IconButton(
+          onPressed: _onReviewButtonClick,
+          icon: Icon(Ionicons.send_outline),
+        ),
+      ],
+    );
+  }
+
+  void _onReviewButtonClick() async {
+    var result = await controller.addReview(controller.content!.id);
+    if (result.status) {
+      Get.snackbar('Review', 'Review added successfully!!');
+    } else {
+      Get.snackbar('Review', 'Could not add Review. Try Again!!');
+    }
   }
 }
 
@@ -283,6 +329,7 @@ class ReviewView extends StatelessWidget {
       } else {
         var data = reviews!;
         return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: data.length,
           itemBuilder: (context, idx) {

@@ -74,4 +74,15 @@ class ContentService extends GetConnect {
       decoder: (json) => Review.fromList(json),
     );
   }
+
+  Future<Response<dynamic>> addReview(String contentId, body) {
+    final String token = Prefs.getToken()!;
+    return post(
+      EndPoints.review,
+      body,
+      headers: {
+        "token": token,
+      },
+    );
+  }
 }
