@@ -5,6 +5,8 @@ import 'package:candella/app/data/bindings/chapter_details_binding.dart';
 import 'package:candella/app/data/bindings/content_details_binding.dart';
 import 'package:candella/app/data/bindings/create_content_binding.dart';
 import 'package:candella/app/data/bindings/extras_binding.dart';
+import 'package:candella/app/data/bindings/follower_binding.dart';
+import 'package:candella/app/data/bindings/following_binding.dart';
 import 'package:candella/app/data/bindings/main_screen_binding.dart';
 import 'package:candella/app/data/bindings/profile_screen_binding.dart';
 import 'package:candella/app/data/bindings/visitor_screen_binding.dart';
@@ -18,6 +20,8 @@ import 'package:candella/app/ui/screens/content_details_screen.dart';
 import 'package:candella/app/ui/screens/create_content_screen.dart';
 import 'package:candella/app/ui/screens/edit_profile_screen.dart';
 import 'package:candella/app/ui/screens/extras_screen.dart';
+import 'package:candella/app/ui/screens/follower_page.dart';
+import 'package:candella/app/ui/screens/following_page.dart';
 import 'package:candella/app/ui/screens/genre_selector.dart';
 import 'package:candella/app/ui/screens/main/main_screen.dart';
 import 'package:candella/app/ui/screens/profile_screen.dart';
@@ -107,6 +111,20 @@ class AppPages {
       transition: Transition.rightToLeft,
       curve: Curves.decelerate,
       binding: BrowseByCategoryBinding(),
+    ),
+    GetPage(
+      name: Routes.following,
+      page: () => FollowingPage(),
+      transition: Transition.rightToLeft,
+      curve: Curves.decelerate,
+      binding: FollowingBinding(),
+    ),
+    GetPage(
+      name: Routes.follower,
+      page: () => FollowerPage(),
+      transition: Transition.rightToLeft,
+      curve: Curves.decelerate,
+      binding: FollowerBinding(),
     ),
   ];
 

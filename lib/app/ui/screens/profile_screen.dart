@@ -76,12 +76,20 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                 child: ValueCard(
                   name: 'Followers',
                   value: controller.user.value.followers.length,
+                  onClick: () {
+                    Get.toNamed(Routes.follower,
+                        arguments: controller.user.value.id);
+                  },
                 ),
               ),
               Expanded(
                 child: ValueCard(
                   name: 'Following',
                   value: controller.user.value.following.length,
+                  onClick: () {
+                    Get.toNamed(Routes.following,
+                        arguments: controller.user.value.id);
+                  },
                 ),
               ),
               Expanded(

@@ -1,4 +1,5 @@
 import 'package:candella/app/data/models/User.dart';
+import 'package:candella/app/data/models/follow_user.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
 import 'package:candella/app/services/prefs.dart';
 import 'package:get/get.dart';
@@ -53,6 +54,42 @@ class UserService extends GetConnect {
       body,
       headers: {"token": token!},
       decoder: (json) => User.fromJson(body),
+    );
+  }
+
+  Future<Response<List<FollowUser>>> getFollowing(String id) async {
+    return get(
+      EndPoints.following + '/$id',
+      decoder: (json) => FollowUser.fromList(json),
+    );
+  }
+
+  Future<Response<List<FollowUser>>> getFollower(String id) async {
+    return get(
+      EndPoints.follower + '/$id',
+      decoder: (json) => FollowUser.fromList(json),
+    );
+  }
+
+  Future<Response<dynamic>> follow(String id) {
+    String token = Prefs.getToken()!;
+    return post(
+      EndPoints.follow + '/$id',
+      null,
+      headers: {
+        "token": token,
+      },
+    );
+  }
+
+  Future<Response<dynamic>> unFollow(String id) {
+    String token = Prefs.getToken()!;
+    return post(
+      EndPoints.follow + '/$id',
+      null,
+      headers: {
+        "token": token,
+      },
     );
   }
 }

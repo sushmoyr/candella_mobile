@@ -12,6 +12,32 @@ class VisitorController extends GetxController {
   final RxBool isFollowedByMe = RxBool(false);
   final RxBool loading = RxBool(false);
 
+  void cycleFollow() {
+    if (isFollowedByMe.value) {
+      _unFollowUser();
+    } else {
+      _followUser();
+    }
+  }
+
+  void _unFollowUser() async {
+    var response = await _userService.unFollow(user.value.id!);
+    response.body.toString().printInfo();
+    response.statusCode.toString().printInfo();
+    if (response.isOk) {
+      isFollowedByMe(!isFollowedByMe.value);
+    }
+  }
+
+  void _followUser() async {
+    var response = await _userService.unFollow(user.value.id!);
+    response.body.toString().printInfo();
+    response.statusCode.toString().printInfo();
+    if (response.isOk) {
+      isFollowedByMe(!isFollowedByMe.value);
+    }
+  }
+
   Future<Result> loadUser(String id) async {
     loading(true);
     //try {

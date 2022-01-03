@@ -14,4 +14,6 @@ abstract class Routes {
   static String selectGenre = '/select_genre';
 
   static var editProfile = '/edit_profile';
+  static const following = '/following';
+  static const follower = '/follower';
 }

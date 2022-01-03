@@ -20,10 +20,15 @@ class ChapterDetailsScreen extends GetView<ChapterController> {
     }
 
     return Scaffold(
-        body: Obx(
-      () => Loader(
-        isLoading: controller.loading.value,
-        child: _getBody(context),
+        body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Obx(
+          () => Loader(
+            isLoading: controller.loading.value,
+            child: _getBody(context),
+          ),
+        ),
       ),
     ));
   }

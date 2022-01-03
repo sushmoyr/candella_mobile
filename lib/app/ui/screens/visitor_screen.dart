@@ -1,6 +1,7 @@
 import 'package:candella/app/data/controllers/visitor_controller.dart';
 import 'package:candella/app/resources/constants/app_strings.dart';
 import 'package:candella/app/resources/constants/endpoints.dart';
+import 'package:candella/app/resources/routes/app_routes.dart';
 import 'package:candella/app/ui/screens/error_page.dart';
 import 'package:candella/app/ui/widgets/expandable_card.dart';
 import 'package:candella/app/ui/widgets/loader.dart';
@@ -74,17 +75,32 @@ class VisitorScreen extends GetView<VisitorController> {
                 child: ValueCard(
                   name: 'Followers',
                   value: controller.user.value.followers.length,
+                  onClick: () {
+                    Get.toNamed(Routes.follower,
+                        arguments: controller.user.value.id);
+                  },
                 ),
               ),
               Expanded(
                 child: ValueCard(
                   name: 'Following',
                   value: controller.user.value.following.length,
+                  onClick: () {
+                    Get.toNamed(Routes.following,
+                        arguments: controller.user.value.id);
+                  },
                 ),
               ),
               Expanded(
-                child: Obx(() =>
-                    FollowCard(isFollowing: controller.isFollowedByMe.value)),
+                child: Obx(
+                  () => FollowCard(
+                    isFollowing: controller.isFollowedByMe.value,
+                    onClick: () {
+                      'Clicked'.printInfo();
+                      controller.cycleFollow();
+                    },
+                  ),
+                ),
               ),
             ],
           ),

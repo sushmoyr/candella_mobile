@@ -16,4 +16,10 @@ class EndPoints {
 
   static String chapter = '/c/chapter';
   static String search = '/c/search/text';
+
+  static String follower = '/u/followers';
+  static String following = '/u/following';
+
+  static String follow = '/u/follow';
+  static String unfollow = '/u/unfollow';
 }
