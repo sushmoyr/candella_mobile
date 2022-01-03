@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 class BrowseByCatController extends GetxController {
   final ContentService contentService;
-  Category currentCategory = Category.story;
+  Category currentCategory = Get.arguments;
 
   BrowseByCatController({
     required this.contentService,
@@ -18,13 +18,11 @@ class BrowseByCatController extends GetxController {
 
   @override
   void onInit() {
-    /*currentCategory.toJson().toString().printInfo();
-    initData();*/
+    initData();
     super.onInit();
   }
 
   void initData() {
-    'Init data'.printInfo();
     contentService.getPostByCategory(currentCategory.id).then((value) {
       if (!value.hasError) {
         contentData(value.body ?? <Content>[]);
@@ -48,10 +46,11 @@ class BrowseByCatController extends GetxController {
     if (!response.hasError) {
       var data = response.body;
       List.from(data!.map((e) => e.title)).printInfo();
-      if (data != null && data.isNotEmpty) {
+      if (data.isNotEmpty) {
         var currentItems = contentData.value;
         currentItems.addAll(data);
         contentData(currentItems);
+        contentData.refresh();
         message(contentData.value.length.toString());
         currentPage++;
       } else {
