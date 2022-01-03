@@ -8,6 +8,7 @@ import 'package:candella/app/data/bindings/extras_binding.dart';
 import 'package:candella/app/data/bindings/follower_binding.dart';
 import 'package:candella/app/data/bindings/following_binding.dart';
 import 'package:candella/app/data/bindings/main_screen_binding.dart';
+import 'package:candella/app/data/bindings/notification_binding.dart';
 import 'package:candella/app/data/bindings/profile_screen_binding.dart';
 import 'package:candella/app/data/bindings/visitor_screen_binding.dart';
 import 'package:candella/app/resources/routes/app_routes.dart';
@@ -24,6 +25,7 @@ import 'package:candella/app/ui/screens/follower_page.dart';
 import 'package:candella/app/ui/screens/following_page.dart';
 import 'package:candella/app/ui/screens/genre_selector.dart';
 import 'package:candella/app/ui/screens/main/main_screen.dart';
+import 'package:candella/app/ui/screens/notification_screen.dart';
 import 'package:candella/app/ui/screens/profile_screen.dart';
 import 'package:candella/app/ui/screens/visitor_screen.dart';
 import 'package:flutter/widgets.dart';
@@ -125,6 +127,13 @@ class AppPages {
       transition: Transition.rightToLeft,
       curve: Curves.decelerate,
       binding: FollowerBinding(),
+    ),
+    GetPage(
+      name: Routes.notification,
+      page: () => NotificationScreen(),
+      transition: Transition.rightToLeft,
+      curve: Curves.decelerate,
+      binding: NotificationBinding(),
     ),
   ];
 

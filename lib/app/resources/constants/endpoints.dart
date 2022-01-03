@@ -22,4 +22,5 @@ class EndPoints {
 
   static String follow = '/u/follow';
   static String unfollow = '/u/unfollow';
+  static String notification = '/notifications';
 }

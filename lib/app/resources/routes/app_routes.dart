@@ -16,4 +16,6 @@ abstract class Routes {
   static var editProfile = '/edit_profile';
   static const following = '/following';
   static const follower = '/follower';
+
+  static const notification = '/notification';
 }

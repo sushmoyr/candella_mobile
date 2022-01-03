@@ -41,7 +41,9 @@ class HomeScreen extends GetView<HomeController> {
                     Wrap(
                       children: [
                         AppIconButton(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.notification);
+                          },
                           iconData: Ionicons.notifications_outline,
                         ),
                       ],
