@@ -15,4 +15,5 @@ class EndPoints {
   static String userUpdate = '/u/update';
 
   static String chapter = '/c/chapter';
+  static String search = '/c/search/text';
 }

@@ -71,6 +71,16 @@ class ContentService extends GetConnect {
     );
   }
 
+  Future<Response<List<Content>>> searchPost(String query) async {
+    return get(
+      EndPoints.search,
+      query: {
+        "q": query,
+      },
+      decoder: (json) => Content.fromList(json),
+    );
+  }
+
   Future<Response<List<Review>>> loadReview(String id, {page = 1}) {
     return get(
       EndPoints.reviews + '/$id',

@@ -3,6 +3,7 @@ import 'package:candella/app/data/controllers/extras_controller.dart';
 import 'package:candella/app/data/controllers/home_screen_controller.dart';
 import 'package:candella/app/data/controllers/main_screen_controller.dart';
 import 'package:candella/app/data/controllers/profile_screen_controller.dart';
+import 'package:candella/app/data/controllers/search_controller.dart';
 import 'package:candella/app/services/UserService.dart';
 import 'package:candella/app/services/content_service.dart';
 import 'package:candella/app/ui/screens/extras_screen.dart';
@@ -17,6 +18,11 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut<UserService>(() => UserService());
     Get.lazyPut<ContentService>(() => ContentService());
     Get.lazyPut<HomeScreen>(() => HomeScreen());
+    Get.lazyPut(
+      () => SearchController(
+        Get.find(),
+      ),
+    );
     Get.lazyPut(() => SearchScreen());
     Get.lazyPut(() => ExtrasScreen());
     Get.lazyPut<HomeController>(() => HomeController());
