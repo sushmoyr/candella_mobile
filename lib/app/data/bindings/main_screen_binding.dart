@@ -1,11 +1,14 @@
 import 'package:candella/app/data/controllers/BrowseScreenController.dart';
+import 'package:candella/app/data/controllers/extras_controller.dart';
 import 'package:candella/app/data/controllers/home_screen_controller.dart';
 import 'package:candella/app/data/controllers/main_screen_controller.dart';
 import 'package:candella/app/data/controllers/profile_screen_controller.dart';
 import 'package:candella/app/services/UserService.dart';
 import 'package:candella/app/services/content_service.dart';
+import 'package:candella/app/ui/screens/extras_screen.dart';
 import 'package:candella/app/ui/screens/main/browse_screen.dart';
 import 'package:candella/app/ui/screens/main/home_screen.dart';
+import 'package:candella/app/ui/screens/main/search_screen.dart';
 import 'package:get/get.dart';
 
 class MainScreenBinding extends Bindings {
@@ -14,7 +17,10 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut<UserService>(() => UserService());
     Get.lazyPut<ContentService>(() => ContentService());
     Get.lazyPut<HomeScreen>(() => HomeScreen());
+    Get.lazyPut(() => SearchScreen());
+    Get.lazyPut(() => ExtrasScreen());
     Get.lazyPut<HomeController>(() => HomeController());
+    Get.lazyPut(() => ExtrasController());
     Get.lazyPut(() => BrowseScreen());
     Get.lazyPut(
       () => BrowseScreenController(

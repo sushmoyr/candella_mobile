@@ -1,6 +1,6 @@
 import 'package:candella/app/data/controllers/main_screen_controller.dart';
+import 'package:candella/app/ui/screens/extras_screen.dart';
 import 'package:candella/app/ui/screens/main/browse_screen.dart';
-import 'package:candella/app/ui/screens/main/chat_screen.dart';
 import 'package:candella/app/ui/screens/main/home_screen.dart';
 import 'package:candella/app/ui/screens/main/search_screen.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
@@ -22,8 +22,8 @@ class MainScreen extends GetView<MainScreenController> {
           children: [
             Get.find<HomeScreen>(),
             Get.find<BrowseScreen>(),
-            SearchScreen(),
-            ChatScreen(),
+            Get.find<SearchScreen>(),
+            Get.find<ExtrasScreen>(),
           ],
           controller: controller.pageController,
         ),
@@ -43,8 +43,8 @@ class MainScreen extends GetView<MainScreenController> {
                 title: 'Search',
               ),
               TabData(
-                iconData: Ionicons.chatbubbles_outline,
-                title: 'Chat',
+                iconData: Ionicons.menu_outline,
+                title: 'Menu',
               ),
             ],
             onTabChangedListener: (index) {

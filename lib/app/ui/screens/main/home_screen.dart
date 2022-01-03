@@ -44,14 +44,6 @@ class HomeScreen extends GetView<HomeController> {
                           onTap: () {},
                           iconData: Ionicons.notifications_outline,
                         ),
-                        AppIconButton(
-                          onTap: () {
-                            Get.toNamed(Routes.extras, arguments: {
-                              "user": controller.user.value.toRawJson()
-                            });
-                          },
-                          iconData: Ionicons.menu_outline,
-                        ),
                       ],
                     )
                   ],

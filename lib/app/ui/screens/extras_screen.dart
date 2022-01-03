@@ -12,7 +12,7 @@ class ExtrasScreen extends GetView<ExtrasController> {
 
   @override
   Widget build(BuildContext context) {
-    final rawUser = Get.arguments['user'];
+    final rawUser = Prefs.getCurrentUser();
     if (rawUser == null) {
       return Container();
     }
