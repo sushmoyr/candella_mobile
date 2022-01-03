@@ -23,32 +23,42 @@ class NotificationScreen extends GetView<NotificationController> {
             child: Column(
               children: [
                 TitleOnlyAppbar(title: 'Notifications'),
-                (controller.notifications.value.isEmpty)
-                    ? Center(
-                        child: Text('No Notifications'),
-                      )
-                    : Obx(
-                        () => ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: controller.notifications.value.length,
-                          itemBuilder: (context, idx) {
-                            notify.Notification notification =
-                                controller.notifications.value[idx];
-                            return ListTile(
-                              title: Text(notification.type),
-                              subtitle: Text(notification.message),
-                              isThreeLine: true,
-                              leading: Icon(Ionicons.notifications),
-                            );
-                          },
-                        ),
-                      ),
+                Obx(
+                  () => NotificationList(data: controller.notifications.value),
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class NotificationList extends StatelessWidget {
+  final List<notify.Notification> data;
+
+  const NotificationList({Key? key, required this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (data.isEmpty)
+        ? Center(
+            child: Text('No Notifications'),
+          )
+        : ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: data.length,
+            itemBuilder: (context, idx) {
+              notify.Notification notification = data[idx];
+              return ListTile(
+                title: Text(notification.type),
+                subtitle: Text(notification.message),
+                isThreeLine: true,
+                leading: Icon(Ionicons.notifications),
+              );
+            },
+          );
   }
 }
